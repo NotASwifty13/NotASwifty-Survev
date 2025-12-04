@@ -27,6 +27,10 @@ export interface BuildingDef {
         }>;
         imgs: FloorImage[];
     };
+    walls?: Array<{
+        type: string;
+        collision: AABB[];
+    }>;
     ceiling: {
         zoomRegions: Array<{
             zoomIn?: AABB;
