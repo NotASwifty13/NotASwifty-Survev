@@ -28,6 +28,7 @@ export enum Action {
     ReloadAlt,
     UseItem,
     Revive,
+    Count,
 }
 
 export enum Rarity {
@@ -61,6 +62,7 @@ export enum Anim {
     CrawlForward,
     CrawlBackward,
     Revive,
+    Count,
 }
 
 export enum Plane {
@@ -73,6 +75,7 @@ export enum HasteType {
     Windwalk,
     Takedown,
     Inspire,
+    Count,
 }
 
 export enum Input {
@@ -120,7 +123,7 @@ export const GameConfig = {
     // the protocol we originated from was 78
     // remember to bump this every time a serialization function is changed
     // or a definition item added, removed or moved
-    protocolVersion: 1006,
+    protocolVersion: 1009,
     Input,
     EmoteSlot,
     WeaponSlot,
@@ -221,7 +224,7 @@ export const GameConfig = {
                 "4xscope": 0,
                 "8xscope": 0,
                 "15xscope": 0,
-            } as Record<string, number>,
+            },
         },
         /* STRIP_FROM_PROD_CLIENT:END */
     },
@@ -386,7 +389,7 @@ export const GameConfig = {
         "4xscope": [1, 1, 1, 1],
         "8xscope": [1, 1, 1, 1],
         "15xscope": [1, 1, 1, 1],
-    } as Record<string, number[]>,
+    },
     lootRadius: {
         outfit: 1,
         melee: 1.25,
@@ -403,3 +406,5 @@ export const GameConfig = {
         xp: 1,
     } as Record<string, number>,
 };
+
+export type InventoryItem = keyof (typeof GameConfig)["bagSizes"];

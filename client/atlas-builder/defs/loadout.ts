@@ -1,4 +1,4 @@
-import type { AtlasDef } from "../atlasConfig.ts";
+import type { AtlasDef } from "../atlasDefs";
 
 export const LoadoutAtlas: AtlasDef = {
     compress: false,
@@ -122,6 +122,12 @@ export const LoadoutAtlas: AtlasDef = {
         "emotes/flag-venezuela.svg",
         "emotes/flag-vietnam.svg",
         "emotes/flag-palestine.svg",
+        "emotes/flag-transgender.svg",
+        "emotes/flag-pride.svg",
+        "emotes/flag-lesbian.svg",
+        "emotes/flag-gay.svg",
+        "emotes/flag-asexual.svg",
+        "emotes/flag-nonbinary.svg",
         "emotes/flex.svg",
         "emotes/forest.svg",
         "emotes/gg.svg",
@@ -162,6 +168,8 @@ export const LoadoutAtlas: AtlasDef = {
         "emotes/trunk.svg",
         "emotes/turkey-animal.svg",
         "emotes/whale.svg",
+        "emotes/cake.svg",
+
         "gui/audio-off.svg",
         "gui/audio-on.svg",
         "gui/bullets.svg",
@@ -415,6 +423,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-shirt-outfitDarkShirt.svg",
         "loot/loot-shirt-outfitDesertCamo.svg",
         "loot/loot-shirt-outfitDev.svg",
+        "loot/loot-shirt-outfitGD.svg",
         "loot/loot-shirt-outfitHeaven.svg",
         "loot/loot-shirt-outfitKeyLime.svg",
         "loot/loot-shirt-outfitLumber.svg",

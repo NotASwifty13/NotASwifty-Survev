@@ -1,5 +1,5 @@
 import { Rarity } from "../../gameConfig";
-import { defineSkin } from "../../utils/util";
+import { type DeepPartial, util } from "../../utils/util";
 
 export interface OutfitDef {
     readonly type: "outfit";
@@ -34,8 +34,8 @@ export interface OutfitDef {
     ghillie?: boolean;
 }
 
-function defineOutfitSkin(baseType: string, params: any) {
-    return defineSkin<OutfitDef>(BaseDefs, baseType, params);
+function defineOutfitSkin(baseType: string, params: DeepPartial<OutfitDef>): OutfitDef {
+    return util.mergeDeep({}, BaseDefs[baseType], params);
 }
 const BaseDefs: Record<string, OutfitDef> = {
     outfitBase: {
@@ -215,10 +215,30 @@ const SkinDefs: Record<string, OutfitDef> = {
             tint: 0xffffff,
         },
         rarity: Rarity.Mythic,
-        lore: "Two-time limited edition print.",
+        lore: "The limited edition print.",
+    }),
+    outfitGD: defineOutfitSkin("outfitBase", {
+        name: "Game Designr",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 0xab3030,
+            baseSprite: "player-base-outfitDC.img",
+            handTint: 0xe35f5f,
+            handSprite: "player-hands-02.img",
+            footTint: 0xe35f5f,
+            footSprite: "player-feet-02.img",
+            backpackTint: 0x6e1010,
+            backpackSprite: "player-circle-base-02.img",
+        },
+        lootImg: {
+            sprite: "loot-shirt-outfitGD.img",
+            tint: 0xffffff,
+        },
+        rarity: Rarity.Epic,
+        lore: "For those who knows.",
     }),
     outfitMod: defineOutfitSkin("outfitBase", {
-        name: "Discord Moderatr",
+        name: "Game Moderatr",
         noDropOnDeath: true,
         skinImg: {
             baseTint: 0x3393db,
@@ -234,7 +254,7 @@ const SkinDefs: Record<string, OutfitDef> = {
             sprite: "loot-shirt-outfitMod.img",
             tint: 0xffffff,
         },
-        rarity: Rarity.Rare,
+        rarity: Rarity.Epic,
         lore: "For those who wield the power of the pan.",
     }),
     outfitWheat: defineOutfitSkin("outfitBase", {
@@ -761,6 +781,25 @@ const SkinDefs: Record<string, OutfitDef> = {
         lootImg: {
             sprite: "loot-shirt-outfitCobaltShell.img",
             tint: 0xffffff,
+        },
+    }),
+    outfitFragtastic: defineOutfitSkin("outfitBase", {
+        name: "Fragtastic",
+        rarity: Rarity.Common,
+        lore: "Pin not included. Maybe.",
+        skinImg: {
+            baseTint: 0x62591f,
+            baseSprite: "player-base-01.img",
+            handTint: 0x7f742a,
+            handSprite: "player-hands-01.img",
+            footTint: 0x7f742a,
+            footSprite: "player-feet-01.img",
+            backpackTint: 0x999999,
+            backpackSprite: "player-circle-base-01.img",
+        },
+        lootImg: {
+            sprite: "loot-shirt-01.img",
+            tint: 0x938632,
         },
     }),
     outfitCarbonFiber: defineOutfitSkin("outfitBase", {
