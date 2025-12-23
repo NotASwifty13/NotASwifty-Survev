@@ -3731,6 +3731,225 @@ function createHut<T extends BuildingDef>(e: Partial<T>): T {
             {
                 type: e.specialLoot || "pot_01",
                 pos: v2.create(0, 0),
+scale: 1,
+                ori: 0,
+            },
+        ],
+    };
+    return util.mergeDeep(t, e || {});
+}
+function createLargeHut<T extends BuildingDef>(e: Partial<T>): T {
+    const t = {
+        type: "building",
+        map: {
+            display: true,
+            shapes: [
+                {
+                    collider: collider.createAabbExtents(
+                        v2.create(-2.8, 2.25),
+                        v2.create(12.5, 8.5),
+                    ),
+                    color: 0xe7a847,
+                },
+                {
+                    collider: collider.createAabbExtents(
+                        v2.create(-1.8, -8.5),
+                        v2.create(11.5, 2.25),
+                    ),
+                    color: 0x5e2d03,
+                },
+                {
+                    collider: collider.createAabbExtents(
+                        v2.create(12.5, -1.05),
+                        v2.create(2.8, 9.75),
+                    ),
+                    color: 0x5e2d03,
+                },
+                {
+                    collider: collider.createAabbExtents(
+                        v2.create(0, -22.5),
+                        v2.create(2, 12),
+                    ),
+                    color: 0x5e2d03,
+                },
+            ],
+        },
+        terrain: {
+            waterEdge: {
+            dir: v2.create(0, 1),
+            distMin: -8.5,
+            distMax: 0,
+            },
+        },
+        floor: {
+            surfaces: [
+                {
+                type: "shack",
+                collision: [
+                    collider.createAabbExtents(v2.create(-2.8, 2.25), v2.create(12.5, 8.5)),
+                    collider.createAabbExtents(v2.create(-1.8, -8.5), v2.create(11.5, 2.25)),
+                    collider.createAabbExtents(v2.create(12.5, -1.05), v2.create(2.8, 9.75)),
+                    collider.createAabbExtents(v2.create(0, -22.5), v2.create(2, 12)),
+
+                ]
+                }
+            ],
+            imgs: [
+                {
+                    sprite: "map-building-hut-floor-03.img",
+                    pos: v2.create(0, 0),
+                    scale: 0.5,
+                    alpha: 1,
+                    tint: 0xffffff,
+                },
+                {
+                    sprite: "map-building-hut-floor-02.img",
+                    pos: v2.create(0, -22.7),
+                    scale: 0.5,
+                    alpha: 1,
+                    tint: 0xffffff,
+                },
+            ],
+        },
+        ceiling: {
+            zoomRegions: [
+                {zoomIn: collider.createAabbExtents(v2.create(-2.5, 1.75), v2.create(11.5, 7.5))},
+            ],
+            vision: {width: 4},
+            imgs: [
+                {
+                    pos: v2.create(-2.3, 2),
+                    sprite: e.ceilingImg || "map-building-hut-ceiling-04.img",
+                    scale: 0.5,
+                    alpha: 1,
+                    tint: 0xffffff,
+                },
+            ],
+            destroy: {
+                wallCount: 5,
+                particle: "hutBreak",
+                particleCount: 25,
+                residue: "map-hut-res-02.img",
+            },
+        },
+        mapObjects: [
+            {
+               type: "hut_wall_int_10",
+               pos: v2.create(-4.75, 4.8),
+               scale: 1,
+               ori: 0,
+            },
+            {
+               type: "hut_wall_int_14",
+               pos: v2.create(-7.3, 10.28),
+               scale: 1,
+               ori: 1,
+            },
+            {
+               type: "hut_wall_int_7",
+               pos: v2.create(-14.75, 7.28),
+               scale: 1,
+               ori: 0,
+            },
+            {
+               type: "hut_window_open_01",
+               pos: v2.create(-15, 2.21),
+               scale: 1,
+               ori: 0,
+            },
+            {
+               type: "hut_wall_int_7",
+               pos: v2.create(-14.75, -2.75),
+               scale: 1,
+               ori: 0,
+            },
+            {
+               type: "hut_wall_int_5",
+               pos: v2.create(-11.8, -5.75),
+               scale: 1,
+               ori: 1,
+            },
+            {
+               type: "hut_wall_int_5",
+               pos: v2.create(-2.75, -5.75),
+               scale: 1,
+               ori: 1,
+            },
+            {
+               type: "hut_window_open_01",
+               pos: v2.create(1.25, -6),
+               scale: 1,
+               ori: 1,
+            },
+            {
+               type: "hut_wall_int_6",
+               pos: v2.create(5.75, -5.75),
+               scale: 1,
+               ori: 1,
+            },
+            {
+               type: "hut_wall_int_6",
+               pos: v2.create(9.23, -3.25),
+               scale: 1,
+               ori: 0,
+            },
+            {
+               type: "hut_wall_int_7",
+               pos: v2.create(9.23, 7.25),
+               scale: 1,
+               ori: 0,
+            },
+            {
+               type: "hut_wall_int_6",
+               pos: v2.create(5.75, 10.25),
+               scale: 1,
+               ori: 1,
+            },
+            {
+               type: "hut_window_open_01",
+               pos: v2.create(1.25, 10.5),
+               scale: 1,
+               ori: 1,
+            },
+            {
+               type: "chest_01",
+               pos: v2.create(6, -3.15),
+               scale: 1,
+               ori: 2,
+            },
+            {
+               type: "table_01",
+               pos: v2.create(-2.2, 7.25),
+               scale: 1,
+               ori: 1,
+            },
+            {
+               type: "barrel_02",
+               pos: v2.create(4.25, 8),
+               scale: 0.9,
+               ori: 1,
+            },
+            {
+               type: "barrel_02",
+               pos: v2.create(7, 6.25),
+               scale: 0.9,
+               ori: 1,
+            },
+            {
+               type: "pot_01",
+               pos: v2.create(-7, 8),
+               scale: 1,
+               ori: 1,
+            },
+            {
+               type: "pot_01",
+               pos: v2.create(-12.5, -3.5),
+               scale: 1,
+               ori: 1,
+            },
+            {
+               type: "bed_sm_01",
+               pos: v2.create(-12.25, 5.9),
                 scale: 1,
                 ori: 0,
             },
@@ -13400,6 +13619,7 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
     }),
     hut_window_open_01: createLowWall({ img: { tint: 0x753402 } }),
     hut_01: createHut({}),
+    hut_04: createLargeHut({}),
     hut_01x: createHut({
         ceiling: {
             imgs: [
