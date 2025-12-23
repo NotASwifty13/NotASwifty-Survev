@@ -850,6 +850,7 @@ export class Player extends BaseGameObject {
 
     wearingPan = false;
     healEffect = false;
+    healEffectTicker = 0; 
     // if hit by snowball or potato, slowed down for "x" seconds
     frozenTicker = 0;
     frozen = false;
@@ -1998,6 +1999,12 @@ export class Player extends BaseGameObject {
          */
         const oldHealEffect = this.healEffect;
         this.healEffect = false;
+        
+        // Special handling for short ticker for throwable healing
+        this.healEffectTicker -= dt;
+        if (this.healEffectTicker > 0) {
+            this.healEffect = true;
+        }
 
         let zoomRegionZoom = lowestZoom;
         let insideNoZoomRegion = true;

@@ -49,6 +49,8 @@ export interface ThrowableDef {
     };
     strikeDelay?: number;
     freezeOnImpact?: boolean;
+    healTeam?: boolean;
+    healValue?: number;
     heavyType?: string;
     changeTime?: number; // after changeTime has elapsed, throwable is changed to its "heavyType" variant
     forceMaxThrowDistance?: boolean;
