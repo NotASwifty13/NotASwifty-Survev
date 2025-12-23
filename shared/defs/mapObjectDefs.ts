@@ -3731,7 +3731,7 @@ function createHut<T extends BuildingDef>(e: Partial<T>): T {
             {
                 type: e.specialLoot || "pot_01",
                 pos: v2.create(0, 0),
-scale: 1,
+                scale: 1,
                 ori: 0,
             },
         ],
