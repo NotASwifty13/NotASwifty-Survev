@@ -31,7 +31,8 @@ export type Atlas =
     | "snow"
     | "woods"
     | "cobalt"
-    | "savannah";
+    | "savannah"
+    | "turkey";
 
 export const MapDefs = {
     main: Main,
@@ -112,7 +113,7 @@ export interface MapDef {
         sniperMode?: boolean;
         perkMode?: boolean;
         perkModeRoles?: string[];
-        turkeyMode?: number;
+        turkeyMode?: boolean;
         spookyKillSounds?: boolean;
     };
     gameConfig: {
