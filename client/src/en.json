@@ -648,6 +648,8 @@
   "game-scavenger-desc": "Obstacles drop additional items when destroyed.",
   "game-scavenger_adv": "Master Scavenger",
   "game-scavenger_adv-desc": "Obstacles drop additional high-quality items when destroyed.",
+  "game-pirate": "Pirate's Bounty",
+  "game-pirate-desc": "Kills with melee weapons drop additional loot with a small chance of dropping rare weapons.",
   "game-hunted": "The Hunted",
   "game-hunted-desc": "Your location is revealed to all enemies.",
   "game-chambered": "One In The Chamber",

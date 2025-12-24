@@ -5,6 +5,7 @@ import type { Vec2 } from "../../utils/v2";
 export interface MeleeDef {
     readonly type: "melee";
     name: string;
+    perk?: string;
     quality: number;
     autoAttack: boolean;
     switchDelay: number;
