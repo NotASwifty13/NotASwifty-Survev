@@ -12954,6 +12954,24 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
         ],
         map: { displayType: "bush_06" },
     }),
+    cache_03tr: createCache({
+        mapObjects: [
+            {
+                type: "bush_06tr",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "loot_tier_leaf_pile",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "bush_06" },
+    }),
     cache_06: createCache({
         mapObjects: [
             {
@@ -14075,6 +14093,7 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
     logging_complex_02su: createLoggingComplex2({ groundTintDk: 0x4e7d13 }),
     logging_complex_03: createLoggingComplex3({}),
     logging_complex_03sp: createLoggingComplex3({ groundTintDk: 0x253210 }),
+    logging_complex_03su: createLoggingComplex3({ groundTintDk: 0x4e7d13 }),
     junkyard_01: {
         type: "building",
         map: { display: true, shapes: [] },
