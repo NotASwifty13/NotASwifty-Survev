@@ -99,6 +99,8 @@ export class Obstacle implements AbstractObject {
 
     collider!: Collider;
 
+    definedWall?: Collider;
+
     constructor() {
         this.sprite.anchor.set(0.5, 0.5);
         this.sprite.visible = false;
@@ -155,7 +157,24 @@ export class Obstacle implements AbstractObject {
         this.imgScale = def.img.scale!;
         this.imgMirrorY = def.img.mirrorY!;
         this.imgMirrorX = def.img.mirrorX!;
-        this.collider = collider.transform(def.collision, this.pos, this.rot, this.scale);
+
+        if (fullUpdate) {
+            if (data.hasWallDefinitions && data.wallDefinitions) {
+                this.definedWall = collider.createAabb(
+                    v2.create(data.wallDefinitions.min.x, data.wallDefinitions.min.y),
+                    v2.create(data.wallDefinitions.max.x, data.wallDefinitions.max.y),
+                );
+            } else {
+                this.definedWall = undefined;
+            }
+        }
+        const obstacleCollision = this.definedWall ?? def.collision;
+        this.collider = collider.transform(
+            obstacleCollision,
+            this.pos,
+            this.rot,
+            this.scale,
+        );
         if (isNew) {
             this.isNew = true;
             this.exploded = ctx.map.deadObstacleIds.includes(this.__id);

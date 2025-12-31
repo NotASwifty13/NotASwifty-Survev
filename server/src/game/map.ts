@@ -1887,6 +1887,31 @@ export class GameMap {
 
             if (obj) building.childObjects.push(obj);
         }
+        if (def.walls) {
+            for (const wallDef of def.walls) {
+                for (const aabb of wallDef.collision) {
+                    // Calculate wall position from AABB center
+                    const extent = v2.mul(v2.sub(aabb.max, aabb.min), 0.5);
+                    const center = v2.add(aabb.min, extent);
+                    const wallPos = math.addAdjust(pos, center, ori);
+                    
+                    const wall = this.genObstacle(
+                        wallDef.type,
+                        wallPos,
+                        layer,
+                        ori,
+                        1, 
+                        building.__id,
+                    );
+                    
+                    // Create local-space collision from AABB extents
+                    const customBounds = collider.createAabbExtents(v2.create(0, 0), extent);
+                    wall.setDefinedWall(customBounds);
+                    
+                    building.childObjects.push(wall);
+                }
+            }
+        }
 
         for (const patch of def.mapGroundPatches ?? []) {
             this.msg.groundPatches.push({
