@@ -1858,34 +1858,36 @@ export class GameMap {
         }
 
         for (const mapObject of def.mapObjects ?? []) {
-            let partType = mapObject.type;
+            const instances = mapObject.instances || (mapObject.pos && mapObject.ori !== undefined ? [{ pos: mapObject.pos, ori: mapObject.ori }] : []);
+            for (const inst of instances) {
+                let partType = mapObject.type;
 
-            if (typeof partType === "object") {
-                partType = util.weightedRandomObject(partType);
+                if (typeof partType === "object") {
+                    partType = util.weightedRandomObject(partType);
+                }
+                if (!partType) continue;
+
+                if (dontSpawnLoot && MapObjectDefs[partType].type == "loot_spawner") continue;
+                let instOri: number;
+                if (mapObject.inheritOri === false) instOri = inst.ori;
+                else instOri = (inst.ori + ori) % 4;
+
+                const partPos = math.addAdjust(pos, inst.pos, ori);
+
+                const obj = this.genAuto(
+                    partType,
+                    partPos,
+                    layer,
+                    instOri,
+                    mapObject.scale,
+                    building.__id,
+                    mapObject.puzzlePiece,
+                    mapObject.ignoreMapSpawnReplacement,
+                    def.map?.displayType !== undefined,
+                );
+
+                if (obj) building.childObjects.push(obj);
             }
-            if (!partType) continue;
-
-            if (dontSpawnLoot && MapObjectDefs[partType].type == "loot_spawner") continue;
-
-            let partOri: number;
-            if (mapObject.inheritOri === false) partOri = mapObject.ori;
-            else partOri = (mapObject.ori + ori) % 4;
-
-            const partPos = math.addAdjust(pos, mapObject.pos, ori);
-
-            const obj = this.genAuto(
-                partType,
-                partPos,
-                layer,
-                partOri,
-                mapObject.scale,
-                building.__id,
-                mapObject.puzzlePiece,
-                mapObject.ignoreMapSpawnReplacement,
-                def.map?.displayType !== undefined,
-            );
-
-            if (obj) building.childObjects.push(obj);
         }
         if (def.walls) {
             for (const wallDef of def.walls) {

@@ -57,15 +57,18 @@ function computeBoundingCollider(type: string): Collider {
         // Map objects
         for (let i = 0; i < def.mapObjects.length; i++) {
             const mapObj = def.mapObjects[i];
-            let mt = mapObj.type!;
-            if (typeof mt === "object") {
-                mt = util.weightedRandomObject(mt);
-            }
-            if (mt !== "") {
-                const rot = math.oriToRad(mapObj.ori);
+            if (mapObj.type === "") continue;
+            const instances = mapObj.instances || (mapObj.pos && mapObj.ori !== undefined ? [{ pos: mapObj.pos, ori: mapObj.ori }] : []);
+            for (const inst of instances) {
+                let mt = mapObj.type!;
+                if (typeof mt === "object") {
+                    mt = util.weightedRandomObject(mt);
+                }
+                if (!mt || mt === "") continue;
+                const rot = math.oriToRad(inst.ori);
                 const col = collider.transform(
                     mapHelpers.getBoundingCollider(mt),
-                    mapObj.pos,
+                    inst.pos,
                     rot,
                     mapObj.scale,
                 );

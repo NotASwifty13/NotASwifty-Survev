@@ -59,6 +59,10 @@ export interface BuildingDef {
     mapObjects: Array<{
         type?: string | Record<string, number>;
         pos: Vec2;
+        instances?: Array<{
+            pos: Vec2;
+            ori: number;
+        }>;
         scale: number;
         ori: number;
         ignoreMapSpawnReplacement?: boolean;
