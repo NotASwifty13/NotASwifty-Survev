@@ -490,21 +490,20 @@ export class Obstacle extends BaseGameObject {
                 const count = util.randomInt(lootTierOrItem.min!, lootTierOrItem.max!);
 
                 for (let i = 0; i < count; i++) {
-                    const items = this.game.lootBarn.getLootTable(lootTierOrItem.tier!);
+                    const item = this.game.lootBarn.getLootTable(lootTierOrItem.tier!);
+                    if (!item) continue;
 
-                    for (const item of items) {
-                        this.game.lootBarn.addLoot(
-                            item.name,
-                            v2.add(lootPos, v2.mul(v2.randomUnit(), 0.2)),
-                            this.layer,
-                            item.count,
-                            undefined,
-                            undefined, // undefined to use default push speed value
-                            params.dir,
-                            lootTierOrItem.props?.preloadGuns || item.preload,
-                            "obstacle",
-                        );
-                    }
+                    this.game.lootBarn.addLoot(
+                        item.name,
+                        v2.add(lootPos, v2.mul(v2.randomUnit(), 0.2)),
+                        this.layer,
+                        item.count,
+                        undefined,
+                        undefined, // undefined to use default push speed value
+                        params.dir,
+                        lootTierOrItem.props?.preloadGuns || item.preload,
+                        "obstacle",
+                    );
                 }
             } else {
                 this.game.lootBarn.addLoot(
@@ -546,7 +545,8 @@ export class Obstacle extends BaseGameObject {
                 let collision: Collider | undefined = undefined;
                 if (obj.isDoor) {
                     collision = collider.createCircle(obj.pos, 0.5);
-                } else if (obj.type.includes("window_open")) {
+                } else if (obj.height == 0.2 && obj.isWall && !obj.destructible) {
+                    // broken windows
                     collision = obj.collider;
                 }
                 if (!collision) continue;

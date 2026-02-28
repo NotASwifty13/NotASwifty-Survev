@@ -46,13 +46,6 @@ const mapDef: PartialMapDef = {
             { name: "tier_katanas", count: 1, weight: 3 }, // ?
             { name: "naginata", count: 1, weight: 1 }, // ?
         ],
-        tier_ghillie: [
-            {
-                name: "outfitGhillie",
-                count: 1,
-                weight: 1,
-            },
-        ],
     },
     mapGen: {
         customSpawnRules: {
@@ -93,7 +86,6 @@ const mapDef: PartialMapDef = {
         ],
         fixedSpawns: [
             {
-                logging_complex_01sp: 1,
                 logging_complex_02sp: 1,
                 logging_complex_03sp: 3,
                 teapavilion_01w: 1,

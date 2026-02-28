@@ -243,6 +243,19 @@ export class WeaponManager {
             this.player.setDirty();
         }
 
+        const newPerk = weaponDef && "perk" in weaponDef ? weaponDef.perk : "";
+        const oldDef = GameObjectDefs[this.weapons[idx].type];
+        const oldPerk = oldDef && "perk" in oldDef ? oldDef.perk : "";
+
+        if (oldPerk && oldPerk !== newPerk) {
+            this.player.removePerk(oldPerk);
+            this.player.setDirty();
+        }
+        if (newPerk && newPerk !== oldPerk) {
+            this.player.addPerk(newPerk);
+            this.player.setDirty();
+        }
+
         // pan is always "worn" if player has it and any other slot is selected
         if (type == "pan" && this.curWeapIdx != WeaponSlot.Melee) {
             this.player.wearingPan = true;
@@ -271,12 +284,15 @@ export class WeaponManager {
         this.player.weapsDirty = true;
     }
 
+    bufferInput = false;
+
     update(dt: number) {
         const player = this.player;
 
         if (player.downed) {
             return;
         }
+        this.bufferInput = false;
 
         player.freeSwitchTimer -= dt;
 
@@ -328,7 +344,9 @@ export class WeaponManager {
             }
         }
 
-        player.shootStart = false;
+        if (!this.bufferInput) {
+            player.shootStart = false;
+        }
     }
 
     gunUpdate(dt: number) {
@@ -344,9 +362,13 @@ export class WeaponManager {
                 }
                 break;
             case "single":
-                if (player.shootStart && weapon.cooldown < 0) {
-                    this.fireWeapon(this.offHand);
-                    this.offHand = !this.offHand;
+                if (player.shootStart) {
+                    if (weapon.cooldown < 0) {
+                        this.fireWeapon(this.offHand);
+                        this.offHand = !this.offHand;
+                    } else if (weapon.cooldown < 0.1) {
+                        this.bufferInput = true;
+                    }
                 }
                 break;
             case "burst":
@@ -755,6 +777,7 @@ export class WeaponManager {
         const hasExplosive = this.player.hasPerk("explosive");
         const hasSplinter = this.player.hasPerk("splinter");
         const hasApRounds = this.player.hasPerk("ap_rounds");
+        const hasHighVelocity = this.player.hasPerk("high_velocity");
         const shouldApplyChambered =
             this.player.hasPerk("chambered") &&
             itemDef.ammo !== "12gauge" &&
@@ -792,9 +815,17 @@ export class WeaponManager {
 
         let bulletType = itemDef.bulletType;
 
+        let speedMult = 1;
+        let distanceMult = 1;
         if (itemDef.ammo == "9mm" && this.player.hasPerk("bonus_9mm")) {
-            bulletType = itemDef.bulletTypeBonus ?? bulletType;
             spread *= PerkProperties.bonus_9mm.spreadMul;
+            speedMult = PerkProperties.bonus_9mm.speedMult;
+            distanceMult = PerkProperties.bonus_9mm.distanceMult;
+        }
+
+        if (this.player.hasPerk("high_velocity")) {
+            speedMult *= PerkProperties.high_velocity.speedMult;
+            distanceMult *= PerkProperties.high_velocity.distanceMult;
         }
 
         const bulletCount = itemDef.bulletCount;
@@ -849,6 +880,8 @@ export class WeaponManager {
                 distance,
                 clipDistance: itemDef.toMouseHit,
                 damageMult,
+                speedMult,
+                distanceMult,
                 shotFx: i === 0,
                 shotOffhand: offHand,
                 trailSaturated: shouldApplyChambered || saturated,
@@ -857,6 +890,7 @@ export class WeaponManager {
                 reflectCount: 0,
                 splinter: hasSplinter,
                 apRounds: hasApRounds,
+                highVelocity: hasHighVelocity,
                 lastShot: weapon.ammo <= 0,
                 reflectObjId: this.player.obstacleOutfit?.__id,
                 onHitFx: hasExplosive ? "explosion_rounds" : undefined,
@@ -1120,15 +1154,16 @@ export class WeaponManager {
         this.player.playAnim(
             GameConfig.Anim.Cook,
             itemDef.cookable ? itemDef.fuseTime : Infinity,
-            () => {
-                this.throwThrowable();
-            },
         );
     }
 
     throwThrowable(noSpeed?: boolean): void {
         if (!this.cookingThrowable) return;
         this.cookingThrowable = false;
+
+        if (this.cookTicker < GameConfig.player.cookTime) {
+            return;
+        }
 
         const oldThrowableType = this.weapons[GameConfig.WeaponSlot.Throwable].type;
         const amount = this.player.invManager.get(oldThrowableType as InventoryItem);
