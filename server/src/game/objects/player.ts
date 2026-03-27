@@ -19,6 +19,7 @@ import type { MeleeDef } from "../../../../shared/defs/gameObjects/meleeDefs";
 import type { OutfitDef } from "../../../../shared/defs/gameObjects/outfitDefs";
 import { PerkProperties } from "../../../../shared/defs/gameObjects/perkDefs";
 import type { RoleDef } from "../../../../shared/defs/gameObjects/roleDefs";
+import { mergeRoleOverride } from "../../../../shared/defs/gameObjects/roleDefs";
 import type { ThrowableDef } from "../../../../shared/defs/gameObjects/throwableDefs";
 import { UnlockDefs } from "../../../../shared/defs/gameObjects/unlockDefs";
 import {
@@ -910,10 +911,15 @@ export class Player extends BaseGameObject {
     fatTicker = 0;
 
     promoteToRole(role: string) {
-        const roleDef = GameObjectDefs[role] as RoleDef;
+        let roleDef = GameObjectDefs[role] as RoleDef;
         if (!roleDef || roleDef.type !== "role") {
             this.game.logger.warn(`Invalid role type: ${role}`);
             return;
+        }
+
+        const roleOverride = this.game.map.mapDef.gameConfig.roles?.roleOverrides?.[role];
+        if (roleOverride) {
+            roleDef = mergeRoleOverride(roleDef, roleOverride);
         }
 
         if (role === "leader") {

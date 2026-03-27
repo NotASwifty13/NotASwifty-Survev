@@ -1,4 +1,5 @@
 import type { Vec2 } from "../utils/v2";
+import type { RoleDef } from "./gameObjects/roleDefs";
 import { Main } from "./maps/baseDefs";
 import { Beach } from "./maps/beachDefs";
 import { Birthday } from "./maps/birthdayDefs";
@@ -147,6 +148,7 @@ export interface MapDef {
                 circleIdx: number;
                 wait: number;
             }>;
+            roleOverrides?: Record<string, Partial<RoleDef>>;
         };
         unlocks?: {
             timings: Array<{
