@@ -1255,6 +1255,16 @@ export const EmotesDefs: Record<string, EmoteDef> = {
         teamOnly: false,
         category: EmoteCategory.Logos,
     },
+    emote_logometeorite: {
+        type: "emote",
+        name: "The Meteorite",
+        rarity: Rarity.Common,
+        texture: "logo-meteorite.img",
+        sound: "emote_01",
+        channel: "ui",
+        teamOnly: false,
+        category: EmoteCategory.Logos,
+    },
     emote_salt: {
         type: "emote",
         name: "Salt Shaker",
