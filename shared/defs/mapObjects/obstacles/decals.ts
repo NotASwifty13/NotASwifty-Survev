@@ -230,6 +230,18 @@ export const Decals: Record<string, MapObjectDef> = {
             zIdx: 0,
         },
     },
+    decal_caduceus_01: {
+        type: "decal",
+        collision: collider.createCircle(v2.create(0, 0), 3),
+        height: 0,
+        img: {
+            sprite: "map-decal-caduceus.img",
+            scale: 0.5,
+            alpha: 1,
+            tint: 0xffffff,
+            zIdx: 0,
+        },
+    },
     decal_web_01: {
         type: "decal",
         collision: collider.createAabbExtents(v2.create(0, 0), v2.create(1.5, 1.5)),
@@ -517,4 +529,4 @@ export const Decals: Record<string, MapObjectDef> = {
             zIdx: 4,
         },
     },
-}
+} as const satisfies Record<string, MapObjectDef>;

@@ -1,95 +1,12 @@
 import { collider } from "../../../utils/collider";
 import { util } from "../../../utils/util";
 import { v2 } from "../../../utils/v2";
+import { randomObstacleType } from "../objectHelpers"
 import type {
     BuildingDef,
-    LootSpawnDef,
     MapObjectDef,
 } from "../../mapObjectsTyping";
 
-function randomObstacleType(types: Record<string, number>) {
-    return types;
-}
-
-function createBunkerStairs<T extends BuildingDef>(e: Partial<T>): T {
-    const t = {
-        type: "building",
-        map: {
-            display: true,
-            shapes: [
-                {
-                    collider: collider.createAabbExtents(
-                        v2.create(0, 1),
-                        v2.create(2, 3.25),
-                    ),
-                    color: 0x3a3a3a,
-                },
-            ],
-        },
-        terrain: { grass: true, beach: false },
-        zIdx: 1,
-        floor: {
-            surfaces: [
-                {
-                    type: "container",
-                    collision: [
-                        collider.createAabbExtents(v2.create(0, 1), v2.create(2, 3.25)),
-                    ],
-                },
-            ],
-            imgs: [
-                {
-                    sprite: "map-bunker-generic-floor-02.img",
-                    pos: v2.create(0, 0),
-                    scale: 0.5,
-                    alpha: 1,
-                    tint: 0xffffff,
-                },
-            ],
-        },
-        ceiling: {
-            zoomRegions: [
-                {
-                    zoomIn: collider.createAabbExtents(
-                        v2.create(0, 0.75),
-                        v2.create(2, 3.25),
-                    ),
-                },
-            ],
-            imgs: [
-                {
-                    sprite: "map-bunker-generic-ceiling-01.img",
-                    pos: v2.create(0, 0),
-                    scale: 0.5,
-                    alpha: 1,
-                    tint: 0xffffff,
-                    rot: 0,
-                },
-            ],
-        },
-        mapObjects: [
-            {
-                type: "metal_wall_ext_6",
-                pos: v2.create(0, -2.2),
-                scale: 1,
-                ori: 1,
-            },
-            {
-                type: "metal_wall_ext_7",
-                pos: v2.create(-2.5, 1),
-                scale: 1,
-                ori: 0,
-            },
-            {
-                type: "metal_wall_ext_7",
-                pos: v2.create(2.5, 1),
-                scale: 1,
-                ori: 0,
-            },
-        ],
-    };
-    return util.mergeDeep(t, e || {});
-}
 function createStatue<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -230,7 +147,6 @@ function createStatueUnderground<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createBank<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -664,7 +580,6 @@ function createBank<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createBankVault<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -833,7 +748,6 @@ function createBankVault<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createBarn<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -1314,7 +1228,6 @@ function createBarn<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createBarnBasement<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -1446,7 +1359,6 @@ function createBarnBasement<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createBridgeLarge<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -2187,7 +2099,6 @@ function createCabin<T extends ExtendedBuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createHut<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -2343,7 +2254,6 @@ function createHut<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createLargeHut<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -2591,7 +2501,6 @@ function createLargeHut<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createShack3<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -2770,7 +2679,6 @@ function createShack3<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createGreenhouse<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -3074,7 +2982,6 @@ function createGreenhouse<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createLoggingComplex<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -3454,7 +3361,6 @@ function createLoggingComplex<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createLoggingComplex2<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -3548,7 +3454,6 @@ function createLoggingComplex2<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createLoggingComplex3<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -3603,7 +3508,6 @@ function createLoggingComplex3<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createCamp<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -3744,7 +3648,6 @@ function createCamp<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createMansion<T extends ExtendedBuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -4512,7 +4415,6 @@ function createMansion<T extends ExtendedBuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createMansionCellar<T extends BuildingDef>(
     e: Partial<
         T & {
@@ -4793,7 +4695,6 @@ function createMansionCellar<T extends BuildingDef>(
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createOutHouse<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -10390,6 +10291,8 @@ export const Buildings: Record<string, MapObjectDef> = {
             },
         ],
     },
+    statue_building_04: createStatue({ statue: "statue_04" }),
+    statue_underground_04: createStatueUnderground({ crate: "crate_22d" }),
     statue_building_03: createStatue({ statue: "statue_03" }),
     statue_underground_03: createStatueUnderground({ crate: "crate_02d" }),
     river_town_01: {
@@ -11281,38 +11184,6 @@ export const Buildings: Record<string, MapObjectDef> = {
             ],
         },
     } as unknown as Partial<BuildingDef>),
-    outhouse_02: createOutHouse({
-        map: { display: true, color: 0x9e4116, scale: 1 },
-        ceiling: {
-            zoomRegions: [
-                {
-                    zoomIn: collider.createAabbExtents(
-                        v2.create(0, 1.45),
-                        v2.create(3.6, 3.2),
-                    ),
-                    zoomOut: collider.createAabbExtents(
-                        v2.create(0, 1.4),
-                        v2.create(3.8, 3.4),
-                    ),
-                },
-            ],
-            imgs: [
-                {
-                    sprite: "map-building-outhouse-ceiling.img",
-                    scale: 0.5,
-                    alpha: 1,
-                    tint: 0xd19698,
-                },
-            ],
-            destroy: {
-                wallCount: 2,
-                particleCount: 15,
-                particle: "outhouseBreak",
-                residue: "map-outhouse-res.img",
-            },
-        },
-        obs: "toilet_02b",
-    }),
     perch_01: (function (e) {
         const t = {
             type: "building",
@@ -11775,7 +11646,6 @@ export const Buildings: Record<string, MapObjectDef> = {
         map: { displayType: "barn_01" },
     } as unknown as Partial<BuildingDef>),
     bank_01: createBank({ teamId: 1 }),
-    bank_01b: createBank({ vault: "vault_01b" }),
     bank_01x: createBank({
         ceiling: {
             imgs: [
@@ -13038,6 +12908,12 @@ export const Buildings: Record<string, MapObjectDef> = {
         tea_house: "teahouse_01x",
         tree_small: "tree_10",
         tree_large: "tree_10",
+    }),
+    teahouse_complex_01cb: createTeaHouseComplex({
+        grass_color: 0x414c58,
+        tea_house: "teahouse_01",
+        tree_small: "tree_01cb",
+        tree_large: "tree_01cb",
     }),
     savannah_patch_01: (function <T extends BuildingDef>(e: Partial<T>): T {
         const t = {

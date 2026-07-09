@@ -6,7 +6,7 @@ import type {
     BuildingDef,
     ObstacleDef,
 } from "../../mapObjectsTyping";
-import { tierLoot, autoLoot } from "./obstacleHelpers"
+import { tierLoot, autoLoot } from "../objectHelpers"
 
 //
 // Mostly exterior, map spawned objects such as stones and trees
@@ -45,7 +45,6 @@ function createBarrel<T extends ObstacleDef>(params: Partial<T>): T {
     };
     return util.mergeDeep(baseDef, params || {});
 }
-
 function createBush<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -79,7 +78,6 @@ function createBush<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createCampfire<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -110,7 +108,6 @@ function createCampfire<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createCache<T extends BuildingDef>(e: Partial<T>): T {
     const t = {
         type: "building",
@@ -147,7 +144,6 @@ function createCache<T extends BuildingDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createPotato<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -183,7 +179,6 @@ function createPotato<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createTomato<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -219,7 +214,6 @@ function createTomato<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createEgg<T extends ObstacleDef>(e: Partial<T>): T {
     const def: ObstacleDef = {
         type: "obstacle",
@@ -263,7 +257,6 @@ function createEgg<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(def, e || {});
 }
-
 function createPumpkin<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -297,7 +290,6 @@ function createPumpkin<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createSandBags<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -328,7 +320,6 @@ function createSandBags<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createSilo<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -360,7 +351,6 @@ function createSilo<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createStone<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -393,7 +383,6 @@ function createStone<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createRiverStone<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -431,7 +420,6 @@ function createRiverStone<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createTree<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -466,7 +454,6 @@ function createTree<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createWoodPile<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -578,15 +565,15 @@ export const MapObstacles: Record<string, MapObjectDef> = {
         },
     },
     bush_01: createBush({}),
-        bush_01b: createBush({ img: { alpha: 1 } }),
-        bush_01cb: createBush({
+    bush_01b: createBush({ img: { alpha: 1 } }),
+    bush_01cb: createBush({
             img: { sprite: "map-bush-01cb.img" },
             map: { color: 0x266f59 },
-        } as unknown as Partial<ObstacleDef>),
-        bush_01f: createBush({
+    } as unknown as Partial<ObstacleDef>),
+    bush_01f: createBush({
             img: { sprite: "map-bush-01f.img" },
             map: { color: 0x1b5c08 },
-        } as unknown as Partial<ObstacleDef>),
+    } as unknown as Partial<ObstacleDef>),
         bush_01sv: createBush({
             hitParticle: "leafPrickly",
             explodeParticle: "leafPrickly",
@@ -724,8 +711,751 @@ export const MapObstacles: Record<string, MapObjectDef> = {
             sound: { enter: "bush_enter_02" },
         }),
         bush_07x: createBush({ img: { sprite: "map-bush-07x.img" } }),
+        bush_07cb: createBush({ img: { sprite: "map-bush-07cb.img" } }),
+
     
-        campfire_01: createCampfire({}),
+    campfire_01: createCampfire({}),
+
+    cache_01: createCache({}),
+    cache_01x: createCache({
+        mapObjects: [
+            {
+                type: "stone_02x",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "stone_01x" },
+    }),
+    cache_01sv: createCache({
+        mapObjects: [
+            {
+                type: "stone_02sv",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "stone_01" },
+    }),
+    cache_01cb: createCache({
+        mapObjects: [
+            {
+                type: "stone_02cb",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "stone_01cb" },
+    }),
+    cache_01w: createCache({
+        mapObjects: [
+            {
+                type: "stone_02w",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "stone_01" },
+    }),
+    cache_01bh: createCache({
+        mapObjects: [
+            {
+                type: "stone_02bh",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "stone_01" },
+    }),
+    cache_01f: createCache({
+        mapObjects: [
+            {
+                type: "stone_02f",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "stone_01" },
+    }),
+    cache_02: createCache({
+        mapObjects: [
+            {
+                type: "tree_03",
+                pos: v2.create(0, 0),
+                scale: 0.9,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.2,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "tree_01" },
+    }),
+    cache_02x: createCache({
+        mapObjects: [
+            {
+                type: "tree_03x",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.2,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "tree_10" },
+    }),
+    cache_02sv: createCache({
+        mapObjects: [
+            {
+                type: "tree_03sv",
+                pos: v2.create(0, 0),
+                scale: 0.9,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.2,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "tree_03sv" },
+    }),
+    cache_02w: createCache({
+        mapObjects: [
+            {
+                type: "tree_03w",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.2,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "tree_07" },
+    }),
+    cache_02sp: createCache({
+        mapObjects: [
+            {
+                type: "tree_03sp",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.3,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "tree_07sp" },
+    }),
+    cache_02su: createCache({
+        mapObjects: [
+            {
+                type: "tree_03su",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.3,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "tree_07su" },
+    }),
+    cache_02cb: createCache({
+        mapObjects: [
+            {
+                type: "tree_03cb",
+                pos: v2.create(0, 0),
+                scale: 1.3,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.3,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "tree_01cb" },
+    }),
+    cache_02d: createCache({
+        mapObjects: [
+            {
+                type: "tree_03d",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.2,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "tree_06" },
+    }),
+    cache_02f: createCache({
+        mapObjects: [
+            {
+                type: "tree_03f",
+                pos: v2.create(0, 0),
+                scale: 1.2,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.3,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "tree_08f" },
+    }),
+    cache_02h: createCache({
+        mapObjects: [
+            {
+                type: "tree_03h",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.2,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "tree_07" },
+    }),
+    cache_02bh: createCache({
+        mapObjects: [
+            {
+                type: "tree_03bh",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 0.9,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "tree_14" },
+    }),
+    cache_03: createCache({
+        mapObjects: [
+            {
+                type: "bush_06",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "loot_tier_leaf_pile",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "bush_06" },
+    }),
+    cache_03tr: createCache({
+        mapObjects: [
+            {
+                type: "bush_06tr",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "loot_tier_leaf_pile",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "bush_06" },
+    }),
+    cache_04: createCache({
+        terrain: {
+            grass: false,
+            beach: false,
+            river: { centerWeight: 0.5 },
+            riverShore: false,
+        },
+        mapObjects: [
+            {
+                type: "stone_08",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_caduceus_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+        ],
+    }),
+    cache_04x: createCache({
+        terrain: {
+            grass: false,
+            beach: false,
+            river: { centerWeight: 0.5 },
+            riverShore: false,
+        },
+        mapObjects: [
+            {
+                type: "stone_08x",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_caduceus_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+        ],
+    }),
+    cache_04cb: createCache({
+        terrain: {
+            grass: false,
+            beach: false,
+            river: { centerWeight: 0.5 },
+            riverShore: false,
+        },
+        mapObjects: [
+            {
+                type: "stone_08cb",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_caduceus_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+        ],
+    }),
+    cache_06: createCache({
+        mapObjects: [
+            {
+                type: "bush_07",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "loot_tier_leaf_pile",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "bush_07" },
+    }),
+    cache_06bh: createCache({
+        mapObjects: [
+            {
+                type: "bush_07x",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "loot_tier_leaf_pile",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "bush_07x" },
+    }),
+    cache_07: createCache({
+        mapObjects: [
+            {
+                type: "barrel_01b",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "barrel_01" },
+    }),
+    cache_07w: createCache({
+        mapObjects: [
+            {
+                type: "barrel_01w",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "barrel_01" },
+    }),
+    cache_06cb: createCache({
+        mapObjects: [
+            {
+                type: "bush_07cb",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "loot_tier_leaf_pile",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "bush_07cb" },
+    }),
+    cache_07f: createCache({
+        mapObjects: [
+            {
+                type: "barrel_01f",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1.1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "barrel_01" },
+    }),
+    cache_07bh: createCache({
+        mapObjects: [
+            {
+                type: "barrel_01bh",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_initiative_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+        ],
+    }),
+    cache_log_13: createCache({
+        terrain: { grass: false, beach: true },
+        mapObjects: [
+            {
+                type: "crate_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "recorder_13",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+        map: { displayType: "crate_01" },
+    }),
+    cache_pumpkin_01: createCache({
+        mapObjects: [
+            {
+                type: "pumpkin_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_light_01",
+                pos: v2.create(0, 0),
+                scale: 1.5,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+    }),
+    cache_pumpkin_02: createCache({
+        mapObjects: [
+            {
+                type: "pumpkin_02",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_light_01",
+                pos: v2.create(0, 0),
+                scale: 1.5,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+    }),
+    cache_pumpkin_03: createCache({
+        mapObjects: [
+            {
+                type: "pumpkin_03",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_light_04",
+                pos: v2.create(0, 0),
+                scale: 1.5,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+    }),
+    cache_pumpkin_airdrop_02: createCache({
+        mapObjects: [
+            {
+                type: "crate_11h",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_light_01",
+                pos: v2.create(0, 0),
+                scale: 1.5,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+    }),
+    candle_lit_01: createCache({
+        mapObjects: [
+            {
+                type: "candle_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_light_02",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+    }),
+    candle_lit_02: createCache({
+        mapObjects: [
+            {
+                type: "candle_01",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+            {
+                type: "decal_light_03",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+                inheritOri: false,
+            },
+        ],
+    }),  
+
+    hedgehog_01: {
+        type: "building",
+        map: { display: false, color: 0x665a4e, scale: 1 },
+        terrain: { grass: false, beach: true },
+        floor: {
+            surfaces: [],
+            imgs: [
+                {
+                    sprite: "map-hedgehog-01.img",
+                    scale: 0.5,
+                    alpha: 1,
+                    tint: 0xffffff,
+                },
+            ],
+        },
+        ceiling: { zoomRegions: [], imgs: [] },
+        mapObjects: [
+            {
+                type: "hedgehog_wall",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 1,
+            },
+            {
+                type: "hedgehog_wall",
+                pos: v2.create(0, 0),
+                scale: 1,
+                ori: 0,
+            },
+        ],
+    },
+
+    potato_01: createPotato({}),
+    potato_01f: createPotato({
+        terrain: { grass: true, beach: true, riverShore: false },
+        teamId: 2,
+    }),
+    potato_02: createPotato({ img: { sprite: "map-potato-02.img" } }),
+    potato_02f: createPotato({
+        terrain: { grass: true, beach: true, riverShore: false },
+        img: { sprite: "map-potato-02.img" },
+        teamId: 2,
+    }),
+    potato_03: createPotato({ img: { sprite: "map-potato-03.img" } }),
+    potato_03f: createPotato({
+        terrain: { grass: true, beach: true, riverShore: false },
+        img: { sprite: "map-potato-03.img" },
+        teamId: 2,
+    }),
+    tomato_01: createTomato({
+        terrain: { grass: true, beach: true, riverShore: false },
+        teamId: 1,
+    }),
+    tomato_02: createTomato({
+        terrain: { grass: true, beach: true, riverShore: false },
+        img: { sprite: "map-tomato-02.img" },
+        sound: { explode: "tomato_break_02" },
+        teamId: 1,
+    }),
+    tomato_03: createTomato({
+        hitParticle: "tomatoChip_02",
+        explodeParticle: "tomatoBreak_02",
+        terrain: { grass: true, beach: true, riverShore: false },
+        img: {
+            sprite: "map-tomato-03.img",
+            residue: "map-tomato-res-02.img",
+        },
+        teamId: 1,
+    }),
+    egg_01: createEgg({
+        img: { sprite: "map-egg-01.img" },
+        hitParticle: "pinkChip",
+    }),
+    egg_02: createEgg({
+        img: { sprite: "map-egg-02.img" },
+        hitParticle: "ltblueChip",
+    }),
+    egg_03: createEgg({
+        img: { sprite: "map-egg-03.img" },
+        hitParticle: "yellowChip",
+    }),
+    egg_04: createEgg({
+        img: { sprite: "map-egg-04.img" },
+        hitParticle: "greenChip",
+    }),
 
         pumpkin_01: createPumpkin({
             loot: [tierLoot("tier_outfits", 1, 1), tierLoot("tier_pumpkin_candy", 1, 1)],
@@ -796,11 +1526,83 @@ export const MapObstacles: Record<string, MapObjectDef> = {
             tint: 0xff944d,
         },
     }),
+    statue_01: createStone({
+        scale: { createMin: 1, createMax: 1, destroy: 0.5 },
+        collision: collider.createAabbExtents(v2.create(0, 0), v2.create(4.4, 4.4)),
+        destructible: false,
+        map: { display: true, color: 0x575757, scale: 1 },
+        img: { sprite: "map-statue-01.img", scale: 0.5 },
+    }),
+    statue_03: createStone({
+        stonePlated: true,
+        health: 500,
+        height: 10,
+        scale: {
+            createMin: 1,
+            createMax: 1,
+            destroy: 0.85,
+        },
+        collision: collider.createAabbExtents(v2.create(0, 0), v2.create(4.4, 4.4)),
+        destructible: true,
+        map: { display: true, color: 0x575757, scale: 1 },
+        img: {
+            sprite: "map-statue-03.img",
+            scale: 0.5,
+            residue: "",
+        },
+    }),
+    statue_04: createStone({
+        stonePlated: true,
+        health: 500,
+        height: 10,
+        scale: {
+            createMin: 1,
+            createMax: 1,
+            destroy: 0.85,
+        },
+        collision: collider.createAabbExtents(v2.create(0, 0), v2.create(4.4, 4.4)),
+        destructible: true,
+        map: { display: true, color: 0x575757, scale: 1 },
+        img: {
+            sprite: "map-statue-04.img",
+            scale: 0.5,
+            residue: "",
+        },
+    }),
+    statue_top_01: createStone({
+        health: 500,
+        height: 10,
+        collision: collider.createCircle(v2.create(0, 0), 2.45),
+        scale: { createMin: 1, createMax: 1, destroy: 0.8 },
+        destructible: true,
+        map: { display: false, color: 0x575757, scale: 1 },
+        img: {
+            sprite: "map-statue-top-01.img",
+            residue: "",
+            scale: 0.5,
+            zIdx: 60,
+        },
+    }),
+    statue_top_02: createStone({
+        health: 500,
+        height: 10,
+        collision: collider.createCircle(v2.create(0, 0), 2.45),
+        scale: { createMin: 1, createMax: 1, destroy: 0.8 },
+        destructible: true,
+        map: { display: false, color: 0x575757, scale: 1 },
+        img: {
+            sprite: "map-statue-top-02.img",
+            residue: "",
+            scale: 0.5,
+            zIdx: 60,
+        },
+    }),
+
     stone_01: createStone({}),
-        stone_01b: createStone({
-            img: { residue: "map-stone-res-01b.img" },
-        }),
-        stone_01cb: createStone({
+    stone_01b: createStone({
+        img: { residue: "map-stone-res-01b.img" },
+    }),
+    stone_01cb: createStone({
             map: { display: true, color: 0x9ca2a8, scale: 1 },
             img: {
                 sprite: "map-stone-01cb.img",
@@ -997,6 +1799,43 @@ export const MapObstacles: Record<string, MapObjectDef> = {
                 zIdx: 10,
             },
         }),
+    stone_08: createRiverStone({
+        loot: [
+            tierLoot("tier_medical", 2, 3),
+            tierLoot("tier_surviv", 1, 2),
+            autoLoot("vss", 1),
+        ],
+        img: {
+            sprite: "map-stone-03.img",
+            residue: "",
+            tint: 0xe6e6e6,
+        },
+    }),
+    stone_08x: createRiverStone({
+        loot: [
+            tierLoot("tier_medical", 2, 3),
+            tierLoot("tier_surviv", 1, 2),
+            autoLoot("m39", 1),
+        ],
+        img: {
+            sprite: "map-stone-03x.img",
+            residue: "",
+            tint: 0xe6e6e6,
+        },
+    }),
+    stone_08cb: createRiverStone({
+        loot: [
+            tierLoot("tier_medical", 2, 3),
+            tierLoot("tier_surviv", 1, 2),
+            autoLoot("svd", 1),
+            autoLoot("helmet02", 1),
+        ],
+        img: {
+            sprite: "map-stone-03cb.img",
+            residue: "",
+            tint: 0xe6e6e6,
+        },
+    }),
     tree_01: createTree({}),
     tree_01cb: createTree({
         scale: {
@@ -1113,20 +1952,6 @@ export const MapObstacles: Record<string, MapObjectDef> = {
         scale: { createMin: 1, createMax: 1.2 },
         map: { display: false, color: 0x4f5715, scale: 2.5 },
         img: { sprite: "map-tree-07.img", tint: 0xb1b1b1 },
-        loot: [tierLoot("tier_surviv", 2, 3), autoLoot("mosin", 1)],
-    } as unknown as Partial<ObstacleDef>),
-    // spring cache
-    tree_03sp: createTree({
-        scale: { createMin: 1, createMax: 1.2 },
-        map: { display: false, color: 0xfec6e1, scale: 2.5 },
-        img: { sprite: "map-tree-07sp.img", tint: 0xb1b1b1 },
-        loot: [tierLoot("tier_surviv", 2, 3), autoLoot("mosin", 1)],
-    } as unknown as Partial<ObstacleDef>),
-    // summer cache
-    tree_03su: createTree({
-        scale: { createMin: 1, createMax: 1.2 },
-        map: { display: false, color: 0x215906, scale: 2.5 },
-        img: { sprite: "map-tree-07su.img", tint: 0xb1b1b1 },
         loot: [tierLoot("tier_surviv", 2, 3), autoLoot("mosin", 1)],
     } as unknown as Partial<ObstacleDef>),
     // cobalt cache
@@ -1487,4 +2312,39 @@ export const MapObstacles: Record<string, MapObjectDef> = {
             residue: "map-woodpile-res-03.img",
         },
     }),
-}
+    tire_01: (function<T extends ObstacleDef>(e: Partial<T>): T {
+        const t = {
+            type: "obstacle",
+            scale: {
+                createMin: 1,
+                createMax: 1,
+                destroy: 0.8,
+            },
+            collision: collider.createCircle(v2.create(0, 0), 1.75),
+            height: 0.5,
+            collidable: true,
+            destructible: true,
+            health: 1500,
+            hitParticle: "blackChip",
+            explodeParticle: "barrelBreak",
+            reflectBullets: false,
+            loot: [],
+            map: { display: true, color: 0x665e66, scale: 1 },
+            terrain: { grass: true, beach: true },
+            img: {
+                sprite: "map-tire-01.img",
+                scale: 0.4,
+                alpha: 1,
+                tint: 0xffffff,
+                zIdx: 10,
+            },
+            sound: {
+                bullet: "cloth_bullet",
+                punch: "cloth_punch",
+                explode: "cloth_break_01",
+                enter: "none",
+            },
+        };
+        return util.mergeDeep(t, e || {});
+    })({}),
+} as const satisfies Record<string, MapObjectDef>;

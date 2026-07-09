@@ -5,7 +5,7 @@ import type {
     MapObjectDef,
     ObstacleDef,
 } from "../../mapObjectsTyping";
-import { tierLoot, autoLoot } from "./obstacleHelpers"
+import { tierLoot, autoLoot } from "../objectHelpers"
 
 //
 // Lootable and non-lootable furniture obstacles
@@ -44,7 +44,6 @@ function createWoodBarrel<T extends ObstacleDef>(params: Partial<T>): T {
     };
     return util.mergeDeep(t, params || {});
 }
-
 function createBed<T extends ObstacleDef>(params: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -78,7 +77,6 @@ function createBed<T extends ObstacleDef>(params: Partial<T>): T {
     };
     return util.mergeDeep(t, params || {});
 }
-
 function createBookShelf<T extends ObstacleDef>(params: Partial<T>): T {
     const ObstacleDef = {
         type: "obstacle",
@@ -112,7 +110,39 @@ function createBookShelf<T extends ObstacleDef>(params: Partial<T>): T {
     };
     return util.mergeDeep(ObstacleDef, params || {});
 }
-
+function createControlPanel<T extends ObstacleDef>(e: Partial<T>): T {
+    const t = {
+        type: "obstacle",
+        scale: { createMin: 1, createMax: 1, destroy: 0.8 },
+        collision: collider.createAabbExtents(v2.create(0, 0), v2.create(1, 1)),
+        height: 0.5,
+        collidable: true,
+        destructible: true,
+        explosion: "explosion_barrel",
+        health: 250,
+        hitParticle: "barrelChip",
+        explodeParticle: "depositBoxGreyBreak",
+        reflectBullets: true,
+        loot: [],
+        map: { display: false },
+        terrain: { grass: false, beach: true },
+        img: {
+            sprite: "map-power-box-01.img",
+            residue: "",
+            scale: 0.5,
+            alpha: 1,
+            tint: 0xffffff,
+            zIdx: 10,
+        },
+        sound: {
+            bullet: "wall_bullet",
+            punch: "metal_punch",
+            explode: "deposit_box_break_01",
+            enter: "none",
+        },
+    };
+    return util.mergeDeep(t, e || {});
+}
 function createCouch<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -146,7 +176,6 @@ function createCouch<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createDepositBox<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -181,7 +210,6 @@ function createDepositBox<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createDrawer<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -215,7 +243,6 @@ function createDrawer<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createGunMount<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -250,7 +277,6 @@ function createGunMount<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createLocker<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -285,41 +311,6 @@ function createLocker<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
-function createControlPanel<T extends ObstacleDef>(e: Partial<T>): T {
-    const t = {
-        type: "obstacle",
-        scale: { createMin: 1, createMax: 1, destroy: 0.8 },
-        collision: collider.createAabbExtents(v2.create(0, 0), v2.create(1, 1)),
-        height: 0.5,
-        collidable: true,
-        destructible: true,
-        explosion: "explosion_barrel",
-        health: 250,
-        hitParticle: "barrelChip",
-        explodeParticle: "depositBoxGreyBreak",
-        reflectBullets: true,
-        loot: [],
-        map: { display: false },
-        terrain: { grass: false, beach: true },
-        img: {
-            sprite: "map-power-box-01.img",
-            residue: "",
-            scale: 0.5,
-            alpha: 1,
-            tint: 0xffffff,
-            zIdx: 10,
-        },
-        sound: {
-            bullet: "wall_bullet",
-            punch: "metal_punch",
-            explode: "deposit_box_break_01",
-            enter: "none",
-        },
-    };
-    return util.mergeDeep(t, e || {});
-}
-
 function createOven<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -353,7 +344,6 @@ function createOven<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createPlanter<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -387,7 +377,6 @@ function createPlanter<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createBottle<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -421,51 +410,6 @@ function createBottle<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
-function createRecorder<T extends ObstacleDef>(e: Partial<T>): T {
-    const t = {
-        type: "obstacle",
-        scale: { createMin: 1, createMax: 1, destroy: 0.8 },
-        collision: collider.createAabbExtents(v2.create(0, 0), v2.create(0.9, 1.5)),
-        height: 0.5,
-        collidable: true,
-        destructible: false,
-        explosion: "explosion_barrel",
-        health: 250,
-        hitParticle: "barrelChip",
-        explodeParticle: "depositBoxGreyBreak",
-        reflectBullets: true,
-        loot: [],
-        map: { display: false },
-        terrain: { grass: false, beach: true },
-        img: {
-            sprite: "map-recorder-01.img",
-            residue: "",
-            scale: 0.5,
-            alpha: 1,
-            tint: 0xffffff,
-            zIdx: 9,
-        },
-        sound: {
-            bullet: "wall_bullet",
-            punch: "metal_punch",
-            explode: "deposit_box_break_01",
-            enter: "none",
-        },
-        button: {
-            interactionRad: 0.2,
-            interactionText: "game-use",
-            useOnce: true,
-            useType: "",
-            useDelay: 0.25,
-            useDir: v2.create(-1, 0),
-            useImg: "map-recorder-02.img",
-            sound: { on: "", off: "" },
-        },
-    };
-    return util.mergeDeep(t, e || {});
-}
-
 function createRefrigerator<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -498,7 +442,6 @@ function createRefrigerator<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createSafe<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -532,7 +475,6 @@ function createSafe<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createTable<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -566,7 +508,6 @@ function createTable<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createToilet<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -600,7 +541,6 @@ function createToilet<T extends ObstacleDef>(e: Partial<T>): T {
     };
     return util.mergeDeep(t, e || {});
 }
-
 function createWheel<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -666,6 +606,11 @@ export const Furniture: Record<string, MapObjectDef> = {
             tierLoot("tier_coconut_outfit", 1, 1),
             autoLoot("coconut", 4),
         ],
+    }),
+    bathhouse_rocks_01: createControlPanel({
+        collision: collider.createAabbExtents(v2.create(0, 0), v2.create(1.55, 1.55)),
+        destructible: false,
+        img: { sprite: "map-bathrocks-01.img" },
     }),
     bed_sm_01: createBed({
         collision: collider.createAabbExtents(v2.create(0, 0), v2.create(1.4, 3.4)),
@@ -1084,6 +1029,7 @@ export const Furniture: Record<string, MapObjectDef> = {
             enter: "none",
         },
     },
+    power_box_01: createControlPanel({}),
     stove_01: createControlPanel({
         obstacleType: "furniture",
         scale: {
@@ -1295,6 +1241,50 @@ export const Furniture: Record<string, MapObjectDef> = {
             enter: "none",
         },
     },
+    vat_03: {
+        type: "obstacle",
+        scale: { createMin: 1, createMax: 1, destroy: 0.9 },
+        collision: collider.createCircle(v2.create(0, 0), 1.75),
+        height: 0.2,
+        collidable: false,
+        destructible: false,
+        health: 250,
+        reflectBullets: false,
+        hitParticle: "glassChip",
+        explodeParticle: "windowBreak",
+        loot: [],
+        map: { display: true, color: 0xb3b3b3, scale: 1 },
+        terrain: { grass: false, beach: false },
+        img: {
+            sprite: "map-vat-03.img",
+            residue: "map-vat-res.img",
+            scale: 0.5,
+            alpha: 1,
+            tint: 0xffffff,
+            zIdx: 50,
+        },
+        sound: {
+            bullet: "glass_bullet",
+            punch: "glass_bullet",
+            explode: "window_break_01",
+            enter: "none",
+        },
+        button: {
+            interactionRad: 1.75,
+            interactionText: "game-use",
+            useOnce: true,
+            destroyOnUse: true,
+            isVat: true,
+            roleToPromote: "classless",
+            useDelay: 0.1,
+            useDir: v2.create(-1, 0),
+            useImg: "",
+            sound: {
+                on: "",
+                off: "",
+            },
+        },
+    },
     vending_01: (function () {
         const t = {
             type: "obstacle",
@@ -1351,4 +1341,6 @@ export const Furniture: Record<string, MapObjectDef> = {
             sound: { on: "wheel_control_01", off: "" },
         },
     }),
-}
+    wheel_02: createWheel({ img: { sprite: "map-wheel-02.img" } }),
+    wheel_03: createWheel({ img: { sprite: "map-wheel-03.img" } }),
+} as const satisfies Record<string, MapObjectDef>;

@@ -1,5 +1,5 @@
 import type { MapObjectDef } from "../../mapObjectsTyping";
-import { tierLoot, autoLoot } from "./obstacleHelpers"
+import { tierLoot, autoLoot } from "../objectHelpers"
 
 export const LootSpawners: Record<string, MapObjectDef> = {
     loot_tier_1: {
@@ -130,11 +130,6 @@ export const LootSpawners: Record<string, MapObjectDef> = {
         type: "loot_spawner",
         loot: [tierLoot("tier_airdrop_armor", 1, 1)],
     },
-    loot_tier_helmet_forest: {
-        type: "loot_spawner",
-        loot: [tierLoot("tier_forest_helmet", 1, 1)],
-        terrain: { grass: true, beach: false },
-    },
     // loot_tier_helmet_potato: {
     //     type: "loot_spawner",
     //     loot: [tierLoot("tier_potato_helmet", 1, 1)],
@@ -181,4 +176,4 @@ export const LootSpawners: Record<string, MapObjectDef> = {
         ],
         terrain: { grass: true, beach: false },
     },
-}
+} as const satisfies Record<string, MapObjectDef>;

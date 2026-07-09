@@ -5,7 +5,7 @@ import type {
     MapObjectDef,
     ObstacleDef,
 } from "../../mapObjectsTyping";
-import { tierLoot, autoLoot } from "./obstacleHelpers"
+import { tierLoot, autoLoot } from "../objectHelpers"
 
 //
 // Purely Loot Obstacles - Crates, Chests, Cases, Airdrops, Etc.
@@ -273,6 +273,23 @@ export const CrateDefs: Record<string, MapObjectDef> = {
         hitParticle: "blackChip",
         map: { display: false, color: 0x6b3500, scale: 0.85 },
     }),
+    case_09: createCase({
+        health: 140,
+        img: {
+            sprite: "map-case-twins-01.img",
+            residue: "map-case-hatchet-res-01.img",
+        },
+        loot: [
+            tierLoot("tier_guns_rare_classless", 1, 1),
+            autoLoot("healthkit", 1),
+            autoLoot("soda", 2),
+            autoLoot("4xscope", 1),
+            autoLoot("chest02", 1),
+            autoLoot("backpack02", 1),
+            autoLoot("naginata_daemon", 1),
+        ],
+        hitParticle: "blackChip",
+    }),
     chest_01: createChest({
         loot: [
             tierLoot("tier_chest", 3, 4),
@@ -349,48 +366,48 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             img: { sprite: "map-crate-02.img" },
             sound: { explode: "crate_break_01" },
         } as unknown as Partial<ObstacleDef>),
-        crate_02sv: createCrate({
-            health: 140,
-            loot: [
-                tierLoot("tier_soviet", 4, 5),
-                tierLoot("tier_world", 1, 1),
-                tierLoot("tier_medical", 1, 1),
-            ],
-            map: { display: true, color: 0xffc000 },
-            terrain: { grass: true, beach: false },
-            img: { sprite: "map-crate-02sv.img" },
-            sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_02sv_lake: createCrate({
-            health: 140,
-            loot: [tierLoot("tier_soviet", 5, 6), tierLoot("tier_medical", 1, 1)],
-            map: { display: true, color: 0xffc000 },
-            img: { sprite: "map-crate-02sv.img" },
-            sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_02x: createCrate({
-            health: 140,
-            loot: [tierLoot("tier_soviet", 3, 5)],
-            map: { display: false },
-            terrain: { grass: true, beach: false },
-            img: { sprite: "map-crate-02x.img" },
-            sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_02f: createCrate({
-            health: 140,
-            loot: [
-                tierLoot("tier_guns", 3, 3, { preloadGuns: true }),
-                tierLoot("tier_armor", 2, 2),
-                tierLoot("tier_packs", 1, 1),
-            ],
-            map: { display: true, color: 0xcc0000 },
-            terrain: { grass: true, beach: false },
-            img: { sprite: "map-crate-02f.img" },
-            sound: { explode: "crate_break_01" },
-            teamId: 1,
-        } as unknown as Partial<ObstacleDef>),
-        crate_02d: createCrate({
-            health: 140,
+    crate_02sv: createCrate({
+        health: 140,
+        loot: [
+            tierLoot("tier_soviet", 4, 5),
+            tierLoot("tier_world", 1, 1),
+            tierLoot("tier_medical", 1, 1),
+        ],
+        map: { display: true, color: 0xffc000 },
+        terrain: { grass: true, beach: false },
+        img: { sprite: "map-crate-02sv.img" },
+        sound: { explode: "crate_break_01" },
+    } as unknown as Partial<ObstacleDef>),
+    crate_02sv_lake: createCrate({
+        health: 140,
+        loot: [tierLoot("tier_soviet", 5, 6), tierLoot("tier_medical", 1, 1)],
+        map: { display: true, color: 0xffc000 },
+        img: { sprite: "map-crate-02sv.img" },
+        sound: { explode: "crate_break_01" },
+    } as unknown as Partial<ObstacleDef>),
+    crate_02x: createCrate({
+        health: 140,
+        loot: [tierLoot("tier_soviet", 3, 5)],
+        map: { display: false },
+        terrain: { grass: true, beach: false },
+        img: { sprite: "map-crate-02x.img" },
+        sound: { explode: "crate_break_01" },
+    } as unknown as Partial<ObstacleDef>),
+    crate_02f: createCrate({
+        health: 140,
+        loot: [
+            tierLoot("tier_guns", 3, 3, { preloadGuns: true }),
+            tierLoot("tier_armor", 2, 2),
+            tierLoot("tier_packs", 1, 1),
+        ],
+        map: { display: true, color: 0xcc0000 },
+        terrain: { grass: true, beach: false },
+        img: { sprite: "map-crate-02f.img" },
+        sound: { explode: "crate_break_01" },
+        teamId: 1,
+    } as unknown as Partial<ObstacleDef>),
+    crate_02d: createCrate({
+        health: 140,
             loot: [
                 autoLoot("m1014", 1),
                 autoLoot("helmet03_lt_aged", 1),
@@ -401,8 +418,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: false },
             img: { sprite: "map-crate-02f.img" },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_03: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_03: createCrate({
             health: 100,
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(1.575, 1.575)),
             loot: [tierLoot("tier_throwables", 2, 4), tierLoot("tier_fragtastic", 1, 1)],
@@ -410,8 +427,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: false },
             img: { sprite: "map-crate-03.img", scale: 0.35 },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_03x: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_03x: createCrate({
             health: 100,
             hitParticle: "glassChip",
             explodeParticle: ["glassPlank"],
@@ -421,8 +438,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: false },
             img: { sprite: "map-crate-03x.img", scale: 0.35 },
             sound: { explode: "crate_break_02" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_04: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_04: createCrate({
             health: 225,
             destructible: true,
             armorPlated: true,
@@ -435,8 +452,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 punch: "ammo_crate_bullet",
                 explode: "crate_break_01",
             },
-        }),
-        crate_05: createCrate({
+    }),
+    crate_05: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(2, 2)),
             destructible: false,
             hitParticle: "goldChip",
@@ -447,8 +464,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 bullet: "wall_brick_bullet",
                 punch: "wall_brick_bullet",
             },
-        }),
-        crate_06: createCrate({
+    }),
+    crate_06: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(2.25, 1.1)),
             health: 175,
             destructible: true,
@@ -461,8 +478,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 bullet: "ammo_crate_bullet",
                 punch: "ammo_crate_bullet",
             },
-        }),
-        crate_07: createCrate({
+    }),
+    crate_07: createCrate({
             health: 140,
             loot: [
                 tierLoot("tier_surviv", 4, 5),
@@ -477,8 +494,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             ],
             img: { sprite: "map-crate-07.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_07b: createCrate({
+    }),
+    crate_07b: createCrate({
             health: 140,
             loot: [
                 tierLoot("tier_armor", 4, 5),
@@ -493,8 +510,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             ],
             img: { sprite: "map-crate-07.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_07sv: createCrate({
+    }),
+    crate_07sv: createCrate({
             health: 140,
             loot: [
                 tierLoot("tier_surviv", 4, 5),
@@ -509,31 +526,31 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             ],
             img: { sprite: "map-crate-07.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_08: createCrate({
+    }),
+    crate_08: createCrate({
             health: 140,
             loot: [tierLoot("tier_surviv", 2, 3)],
             map: { display: false },
             terrain: { grass: true, beach: false },
             img: { sprite: "map-crate-08.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_09: createCrate({
+    }),
+    crate_09: createCrate({
             health: 140,
             loot: [tierLoot("tier_chest", 1, 2), tierLoot("tier_conch", 1, 1)],
             map: { display: false },
             terrain: { grass: true, beach: false },
             img: { sprite: "map-crate-09.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_09bh: createCrate({
+    }),
+    crate_09bh: createCrate({
             health: 140,
             loot: [tierLoot("tier_soviet", 3, 5), tierLoot("tier_outfits", 1, 1)],
             map: { display: false },
             img: { sprite: "map-crate-09.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_10: createCrate({
+    }),
+    crate_10: createCrate({
             health: 200,
             scale: { destroy: 0.75 },
             loot: [
@@ -552,8 +569,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 residue: "map-crate-res-03.img",
             },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_11: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_11: createCrate({
             scale: { destroy: 0.75 },
             health: 200,
             loot: [
@@ -572,8 +589,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 residue: "map-crate-res-03.img",
             },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_11h: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_11h: createCrate({
             collision: collider.createCircle(v2.create(0, 0), 2.25),
             isDecalAnchor: true,
             scale: { destroy: 0.75 },
@@ -596,8 +613,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 residue: "map-crate-res-03.img",
             },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_10sv: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_10sv: createCrate({
             health: 200,
             scale: { destroy: 0.75 },
             loot: [
@@ -617,8 +634,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 residue: "map-crate-res-03.img",
             },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_11sv: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_11sv: createCrate({
             scale: { destroy: 0.75 },
             health: 200,
             loot: [
@@ -638,8 +655,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 residue: "map-crate-res-03.img",
             },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_11de: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_11de: createCrate({
             scale: { destroy: 0.75 },
             health: 200,
             loot: [
@@ -659,8 +676,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 residue: "map-crate-res-03.img",
             },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_11tr: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_11tr: createCrate({
             scale: { destroy: 0.75 },
             health: 200,
             loot: [
@@ -680,8 +697,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 residue: "map-crate-res-03.img",
             },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_12: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_12: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(3.5, 3.5)),
             scale: { destroy: 0.75 },
             health: 500,
@@ -706,8 +723,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 residue: "map-crate-res-03.img",
             },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_12po: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_12po: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(3.5, 3.5)),
             scale: { destroy: 0.75 },
             health: 500,
@@ -732,8 +749,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 residue: "map-crate-res-03.img",
             },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_12dev: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_12dev: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(3.5, 3.5)),
             scale: { destroy: 0.75 },
             health: 1100,
@@ -752,8 +769,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 residue: "map-crate-res-03.img",
             },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_13: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_13: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(3.5, 3.5)),
             scale: { destroy: 0.75 },
             health: 200,
@@ -782,8 +799,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 residue: "map-crate-res-03.img",
             },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_13po: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_13po: createCrate({
             // TODO: same as crate 12
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(3.5, 3.5)),
             scale: { destroy: 0.75 },
@@ -814,20 +831,20 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 residue: "map-crate-res-03.img",
             },
             sound: { explode: "crate_break_01" },
-        } as unknown as Partial<ObstacleDef>),
-        crate_14: createCrate({
+    } as unknown as Partial<ObstacleDef>),
+    crate_14: createCrate({
             explodeParticle: ["windowBreak", "woodPlank"],
             loot: [tierLoot("tier_throwables", 1, 1)],
             img: { sprite: "map-crate-14.img" },
             sound: { explode: "window_break_02" },
-        }),
-        crate_14a: createCrate({
+    }),
+    crate_14a: createCrate({
             explodeParticle: ["windowBreak", "woodPlank"],
             loot: [tierLoot("tier_soviet", 1, 1)],
             img: { sprite: "map-crate-14a.img" },
             sound: { explode: "window_break_02" },
-        }),
-        crate_15: createCrate({
+    }),
+    crate_15: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(2.7, 1.25)),
             health: 100,
             loot: [tierLoot("tier_knives", 4, 4)],
@@ -835,8 +852,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: true },
             img: { sprite: "map-crate-14.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_16: createCrate({
+    }),
+    crate_16: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(2.7, 1.25)),
             health: 100,
             loot: [tierLoot("tier_knives", 4, 4)],
@@ -844,24 +861,24 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: true },
             img: { sprite: "map-crate-14.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_18: createCrate({
+    }),
+    crate_18: createCrate({
             health: 140,
             loot: [tierLoot("tier_cattle_crate", 2, 3), tierLoot("tier_soviet", 1, 2)],
             map: { display: true, color: 0xc45900, scale: 0.875 },
             terrain: { grass: true, beach: false },
             img: { sprite: "map-crate-18.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_19: createCrate({
+    }),
+    crate_19: createCrate({
             health: 140,
             loot: [tierLoot("tier_guns", 1, 3), tierLoot("tier_surviv", 2, 3)],
             map: { display: true, color: 0x44ab00, scale: 0.875 },
             terrain: { grass: true, beach: false },
             img: { sprite: "map-crate-19.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_20: createCrate({
+    }),
+    crate_20: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(1.7, 1.7)),
             health: 75,
             hitParticle: "greenChip",
@@ -871,8 +888,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: false },
             img: { sprite: "map-crate-20.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_21: createCrate({
+    }),
+    crate_21: createCrate({
             health: 140,
             loot: [
                 tierLoot("tier_guns", 1, 2),
@@ -884,8 +901,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: false },
             img: { sprite: "map-crate-21.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_21b: createCrate({
+    }),
+    crate_21b: createCrate({
             health: 140,
             loot: [
                 tierLoot("tier_guns", 1, 2),
@@ -897,8 +914,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: false },
             img: { sprite: "map-crate-21.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        crate_22: createCrate({
+    }),
+    crate_22: createCrate({
             health: 140,
             loot: [
                 tierLoot("tier_guns", 3, 3, { preloadGuns: true }),
@@ -910,8 +927,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             img: { sprite: "map-crate-22.img" },
             sound: { explode: "crate_break_01" },
             teamId: 2,
-        }),
-        crate_22d: createCrate({
+    }),
+    crate_22d: createCrate({
             health: 140,
             loot: [
                 autoLoot("an94", 1),
@@ -923,8 +940,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: false },
             img: { sprite: "map-crate-22.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        airdrop_crate_01: createAirdrop({
+    }),
+    airdrop_crate_01: createAirdrop({
             button: {
                 useImg: "map-airdrop-02.img",
                 useParticle: "airdropCrate01",
@@ -936,8 +953,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_10",
             explodeParticle: "airdropCrate02",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_02: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_02: createAirdrop({
             button: {
                 useImg: "map-airdrop-02.img",
                 useParticle: "airdropCrate01",
@@ -949,8 +966,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_11",
             explodeParticle: "airdropCrate02",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_03: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_03: createAirdrop({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(4, 4)),
             button: {
                 useImg: "map-airdrop-04.img",
@@ -963,8 +980,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_12",
             explodeParticle: "airdropCrate04",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_03po: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_03po: createAirdrop({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(4, 4)),
             button: {
                 useImg: "map-airdrop-04.img",
@@ -977,8 +994,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_12po",
             explodeParticle: "airdropCrate04",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_03dev: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_03dev: createAirdrop({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(4, 4)),
             button: {
                 useImg: "map-airdrop-04.img",
@@ -991,8 +1008,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_12dev",
             explodeParticle: "airdropCrate04",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_04: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_04: createAirdrop({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(4, 4)),
             button: {
                 useImg: "map-airdrop-04.img",
@@ -1005,8 +1022,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_13",
             explodeParticle: "airdropCrate04",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_04po: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_04po: createAirdrop({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(4, 4)),
             button: {
                 useImg: "map-airdrop-04.img",
@@ -1019,8 +1036,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_13po",
             explodeParticle: "airdropCrate04",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_01sv: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_01sv: createAirdrop({
             button: {
                 useImg: "map-airdrop-02.img",
                 useParticle: "airdropCrate01",
@@ -1032,8 +1049,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_10sv",
             explodeParticle: "airdropCrate02",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_02sv: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_02sv: createAirdrop({
             button: {
                 useImg: "map-airdrop-02.img",
                 useParticle: "airdropCrate01",
@@ -1045,8 +1062,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_11sv",
             explodeParticle: "airdropCrate02",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_02de: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_02de: createAirdrop({
             button: {
                 useImg: "map-airdrop-02.img",
                 useParticle: "airdropCrate01",
@@ -1058,8 +1075,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_11de",
             explodeParticle: "airdropCrate02",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_02h: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_02h: createAirdrop({
             collision: collider.createCircle(v2.create(0, 0), 2.5),
             button: {
                 useImg: "map-airdrop-02h.img",
@@ -1072,8 +1089,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "cache_pumpkin_airdrop_02",
             explodeParticle: "airdropCrate02h",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_02tr: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_02tr: createAirdrop({
             button: {
                 useImg: "map-airdrop-02.img",
                 useParticle: "airdropCrate01",
@@ -1085,8 +1102,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_11tr",
             explodeParticle: "airdropCrate02",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_01x: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_01x: createAirdrop({
             button: {
                 useImg: "map-airdrop-02x.img",
                 useParticle: "airdropCrate01x",
@@ -1098,8 +1115,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_10",
             explodeParticle: "airdropCrate02x",
-        } as unknown as Partial<ObstacleDef>),
-        airdrop_crate_02x: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    airdrop_crate_02x: createAirdrop({
             button: {
                 useImg: "map-airdrop-02x.img",
                 useParticle: "airdropCrate01x",
@@ -1111,8 +1128,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "crate_11",
             explodeParticle: "airdropCrate02x",
-        } as unknown as Partial<ObstacleDef>),
-        class_shell_01: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    class_shell_01: createAirdrop({
             collision: collider.createCircle(v2.create(0, 0), 2.25),
             button: {
                 useImg: "map-class-shell-01b.img",
@@ -1126,8 +1143,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             destroyType: "class_crate_common",
             smartLoot: true,
             explodeParticle: "classShell01b",
-        } as unknown as Partial<ObstacleDef>),
-        class_shell_02: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    class_shell_02: createAirdrop({
             collision: collider.createCircle(v2.create(0, 0), 2.25),
             button: {
                 useImg: "map-class-shell-02b.img",
@@ -1141,8 +1158,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             destroyType: "class_crate_rare",
             smartLoot: true,
             explodeParticle: "classShell02b",
-        } as unknown as Partial<ObstacleDef>),
-        class_shell_03: createAirdrop({
+    } as unknown as Partial<ObstacleDef>),
+    class_shell_03: createAirdrop({
             collision: collider.createCircle(v2.create(0, 0), 2.25),
             button: {
                 useImg: "map-class-shell-03b.img",
@@ -1156,20 +1173,18 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             },
             destroyType: "class_crate_mythic",
             explodeParticle: "classShell03b",
-        } as unknown as Partial<ObstacleDef>),
-        class_crate_common_scout: createClassCrate({
-            loot: [
-                tierLoot("tier_guns_common_scout", 1, 1),
-                autoLoot("crowbar_scout", 1),
-                autoLoot("helmet01", 1),
-                autoLoot("backpack01", 1),
-                autoLoot("soda", 1),
-                autoLoot("soda", 1),
-                autoLoot("soda", 1),
-            ],
-            img: { sprite: "map-class-crate-scout.img" },
-        }),
-        class_crate_common_sniper: createClassCrate({
+    } as unknown as Partial<ObstacleDef>),
+    class_crate_common_scout: createClassCrate({
+        loot: [
+            tierLoot("tier_guns_common_scout", 1, 1),
+            autoLoot("crowbar_scout", 1),
+            autoLoot("helmet01", 1),
+            autoLoot("backpack01", 1),
+            autoLoot("soda", 2),
+        ],
+        img: { sprite: "map-class-crate-scout.img" },
+    }),
+    class_crate_common_sniper: createClassCrate({
             loot: [
                 tierLoot("tier_guns_common_sniper", 1, 1),
                 autoLoot("kukri_sniper", 1),
@@ -1178,8 +1193,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 autoLoot("4xscope", 1),
             ],
             img: { sprite: "map-class-crate-sniper.img" },
-        }),
-        class_crate_common_healer: createClassCrate({
+    }),
+    class_crate_common_healer: createClassCrate({
             loot: [
                 tierLoot("tier_guns_common_healer", 1, 1),
                 autoLoot("bonesaw_healer", 1),
@@ -1190,32 +1205,31 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 autoLoot("smoke", 3),
             ],
             img: { sprite: "map-class-crate-healer.img" },
-        }),
-        class_crate_common_demo: createClassCrate({
-            loot: [
-                tierLoot("tier_guns_common_demo", 1, 1),
-                autoLoot("katana_demo", 1),
-                autoLoot("helmet01", 1),
-                autoLoot("backpack02", 1),
-                autoLoot("mirv", 1),
-                autoLoot("mirv", 1),
-                autoLoot("mirv", 1),
-                autoLoot("mirv", 1),
-                autoLoot("mirv", 1),
-                autoLoot("mirv", 1),
-            ],
-            img: { sprite: "map-class-crate-demo.img" },
-        }),
-        class_crate_common_assault: createClassCrate({
-            loot: [
-                tierLoot("tier_guns_common_assault", 2, 2),
-                autoLoot("spade_assault", 1),
-                autoLoot("helmet01", 1),
-                autoLoot("backpack01", 1),
-            ],
-            img: { sprite: "map-class-crate-assault.img" },
-        }),
-        class_crate_common_tank: createClassCrate({
+    }),
+    class_crate_common_demo: createClassCrate({
+        loot: [
+            tierLoot("tier_guns_common_demo", 1, 1),
+            autoLoot("katana_demo", 1),
+            autoLoot("helmet01", 1),
+            autoLoot("chest01", 1),
+            autoLoot("backpack02", 1),
+            autoLoot("2xscope", 1),
+            tierLoot("tier_throwables_demo", 3, 4),
+        ],
+        img: { sprite: "map-class-crate-demo.img" },
+    }),
+    class_crate_common_assault: createClassCrate({
+        loot: [
+            tierLoot("tier_guns_common_assault", 2, 2),
+            autoLoot("spade_assault", 1),
+            autoLoot("bandage", 5),
+            autoLoot("helmet01", 1),
+            autoLoot("chest01", 1),
+            autoLoot("backpack01", 1),
+        ],
+        img: { sprite: "map-class-crate-assault.img" },
+    }),
+    class_crate_common_tank: createClassCrate({
             loot: [
                 tierLoot("tier_guns_common_tank", 1, 1),
                 autoLoot("warhammer_tank", 1),
@@ -1224,8 +1238,18 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 autoLoot("backpack01", 1),
             ],
             img: { sprite: "map-class-crate-tank.img" },
-        }),
-        class_crate_rare_scout: createClassCrate({
+    }),
+    class_crate_common_classless: createClassCrate({
+        loot: [
+            tierLoot("tier_guns_common_classless", 1, 1),
+            tierLoot("tier_medical", 1, 2),
+            tierLoot("tier_throwables", 1, 2),
+            tierLoot("tier_ammo", 1, 1),
+            autoLoot("naginata_daemon", 1),
+        ],
+        img: { sprite: "map-class-crate-classless.img" },
+    }),
+    class_crate_rare_scout: createClassCrate({
             loot: [
                 tierLoot("tier_guns_rare_scout", 1, 1),
                 autoLoot("crowbar_scout", 1),
@@ -1236,8 +1260,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 tierLoot("tier_airdrop_throwables", 1, 1),
             ],
             img: { sprite: "map-class-crate-scout.img" },
-        }),
-        class_crate_rare_sniper: createClassCrate({
+    }),
+    class_crate_rare_sniper: createClassCrate({
             loot: [
                 tierLoot("tier_guns_rare_sniper", 1, 1),
                 autoLoot("kukri_sniper", 1),
@@ -1248,8 +1272,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 tierLoot("tier_airdrop_throwables", 1, 1),
             ],
             img: { sprite: "map-class-crate-sniper.img" },
-        }),
-        class_crate_rare_healer: createClassCrate({
+    }),
+    class_crate_rare_healer: createClassCrate({
             loot: [
                 tierLoot("tier_guns_rare_healer", 1, 1),
                 autoLoot("bonesaw_healer", 1),
@@ -1260,20 +1284,20 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 tierLoot("tier_airdrop_throwables", 1, 1),
             ],
             img: { sprite: "map-class-crate-healer.img" },
-        }),
-        class_crate_rare_demo: createClassCrate({
-            loot: [
-                tierLoot("tier_guns_rare_demo", 1, 1),
-                autoLoot("katana_demo", 1),
-                tierLoot("tier_airdrop_armor", 1, 1),
-                tierLoot("tier_medical", 1, 1),
-                tierLoot("tier_airdrop_scopes", 1, 1),
-                tierLoot("tier_airdrop_ammo", 2, 2),
-                tierLoot("tier_airdrop_throwables", 1, 1),
-            ],
-            img: { sprite: "map-class-crate-demo.img" },
-        }),
-        class_crate_rare_assault: createClassCrate({
+    }),
+    class_crate_rare_demo: createClassCrate({
+        loot: [
+            tierLoot("tier_guns_rare_demo", 1, 1),
+            autoLoot("katana_demo", 1),
+            tierLoot("tier_airdrop_armor", 1, 1),
+            tierLoot("tier_medical", 1, 1),
+            tierLoot("tier_airdrop_scopes", 1, 1),
+            tierLoot("tier_airdrop_ammo", 2, 2),
+            tierLoot("tier_throwables_demo", 4, 5),
+        ],
+        img: { sprite: "map-class-crate-demo.img" },
+    }),
+    class_crate_rare_assault: createClassCrate({
             loot: [
                 tierLoot("tier_guns_rare_assault", 2, 2),
                 autoLoot("spade_assault", 1),
@@ -1284,8 +1308,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 tierLoot("tier_airdrop_throwables", 1, 1),
             ],
             img: { sprite: "map-class-crate-assault.img" },
-        }),
-        class_crate_rare_tank: createClassCrate({
+    }),
+    class_crate_rare_tank: createClassCrate({
             loot: [
                 tierLoot("tier_guns_rare_tank", 1, 1),
                 autoLoot("warhammer_tank", 1),
@@ -1296,12 +1320,24 @@ export const CrateDefs: Record<string, MapObjectDef> = {
                 tierLoot("tier_airdrop_throwables", 1, 1),
             ],
             img: { sprite: "map-class-crate-tank.img" },
-        }),
-        class_crate_mythic: createClassCrate({
+    }),
+    class_crate_rare_classless: createClassCrate({
+        loot: [
+            tierLoot("tier_guns_rare_classless", 1, 1),
+            autoLoot("naginata_daemon", 1),
+            autoLoot("chest03", 1),
+            tierLoot("tier_medical", 2, 3),
+            tierLoot("tier_airdrop_throwables", 2, 2),
+            tierLoot("tier_airdrop_scopes", 1, 1),
+            tierLoot("tier_airdrop_ammo", 2, 2),
+        ],
+        img: { sprite: "map-class-crate-classless.img" },
+    }),
+    class_crate_mythic: createClassCrate({
             loot: [tierLoot("tier_class_crate_mythic", 1, 1)],
             img: { sprite: "map-class-crate-03.img" },
-        }),
-        mil_crate_01: createCrate({
+    }),
+    mil_crate_01: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(2.7, 1.25)),
             health: 100,
             loot: [tierLoot("tier_knives", 1, 1)],
@@ -1309,8 +1345,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: true },
             img: { sprite: "map-crate-mil-01.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        mil_crate_02: createCrate({
+    }),
+    mil_crate_02: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(2.7, 1.25)),
             health: 100,
             loot: [
@@ -1323,8 +1359,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: true },
             img: { sprite: "map-crate-mil-02.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        mil_crate_03: createCrate({
+    }),
+    mil_crate_03: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(2.7, 1.25)),
             health: 100,
             loot: [autoLoot("ots38_dual", 1), autoLoot("outfitSpetsnaz", 1)],
@@ -1332,8 +1368,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: true },
             img: { sprite: "map-crate-mil-03.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        mil_crate_04: createCrate({
+    }),
+    mil_crate_04: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(2.7, 1.25)),
             health: 100,
             loot: [tierLoot("tier_guns", 1, 1), tierLoot("tier_throwables", 2, 3)],
@@ -1341,8 +1377,8 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: true },
             img: { sprite: "map-crate-mil-04.img" },
             sound: { explode: "crate_break_01" },
-        }),
-        mil_crate_05: createCrate({
+    }),
+    mil_crate_05: createCrate({
             collision: collider.createAabbExtents(v2.create(0, 0), v2.create(2.7, 1.25)),
             health: 100,
             loot: [tierLoot("tier_guns", 1, 2), tierLoot("tier_snipers", 1, 2)],
@@ -1350,5 +1386,5 @@ export const CrateDefs: Record<string, MapObjectDef> = {
             terrain: { grass: true, beach: true },
             img: { sprite: "map-crate-mil-05.img" },
             sound: { explode: "crate_break_01" },
-        }),
-}
+    }),
+} as const satisfies Record<string, MapObjectDef>;

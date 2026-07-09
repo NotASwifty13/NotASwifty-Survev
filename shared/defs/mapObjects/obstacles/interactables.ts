@@ -10,6 +10,52 @@ import type {
 // Buttons, Puzzle Pieces, Recorders, etc. 
 //
 
+function createButton<T extends ObstacleDef>(e: Partial<T>): T {
+    const t = {
+        type: "obstacle",
+        scale: { createMin: 1, createMax: 1, destroy: 0.8 },
+        collision: collider.createAabbExtents(v2.create(0, 0), v2.create(0.5, 0.5)),
+        height: 0.3,
+        collidable: false,
+        destructible: false,
+        health: 50,
+        hitParticle: "barrelChip",
+        explodeParticle: "",
+        reflectBullets: false,
+        loot: [],
+        map: { display: false, color: 0xffffff, scale: 1 },
+        terrain: { grass: true, beach: true },
+        img: {
+            sprite: "map-button-01.img",
+            residue: "none",
+            scale: 0.5,
+            alpha: 1,
+            tint: 0xffffff,
+            zIdx: 10,
+        },
+        sound: {
+            bullet: "wall_bullet",
+            punch: "metal_punch",
+            explode: "deposit_box_break_01",
+            enter: "none",
+        },
+        button: {
+            interactionRad: 1.25,
+            interactionText: "game-use",
+            useOnce: true,
+            useType: "",
+            useDelay: 0.25,
+            useDir: v2.create(-1, 0),
+            useImg: "map-button-02.img",
+            sound: {
+                on: "button_press_01",
+                off: "button_press_01",
+            },
+        },
+    };
+    return util.mergeDeep(t, e || {});
+}
+
 function createControlPanel<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -134,6 +180,54 @@ function createBottle2<T extends ObstacleDef>(e: Partial<T>): T {
     return util.mergeDeep(t, e || {});
 }
 
+function createSwitch<T extends ObstacleDef>(e: Partial<T>): T {
+    const t = {
+        type: "obstacle",
+        scale: { createMin: 1, createMax: 1, destroy: 0.8 },
+        collision: collider.createAabbExtents(v2.create(0, 0), v2.create(0.45, 0.55)),
+        height: 0.5,
+        collidable: true,
+        destructible: false,
+        explosion: "",
+        health: 100,
+        hitParticle: "barrelChip",
+        explodeParticle: "",
+        reflectBullets: true,
+        loot: [],
+        map: { display: false },
+        terrain: { grass: false, beach: true },
+        button: {
+            interactionRad: 0.2,
+            interactionText: "game-use",
+            useOnce: true,
+            useType: "",
+            useDelay: 0.25,
+            useDir: v2.create(-1, 0),
+            useImg: "map-switch-02.img",
+            offImg: "map-switch-03.img",
+            sound: {
+                on: "button_press_01",
+                off: "button_press_01",
+            },
+        },
+        img: {
+            sprite: "map-switch-01.img",
+            residue: "",
+            scale: 0.5,
+            alpha: 1,
+            tint: 0xffffff,
+            zIdx: 10,
+        },
+        sound: {
+            bullet: "wall_bullet",
+            punch: "metal_punch",
+            explode: "deposit_box_break_01",
+            enter: "none",
+        },
+    };
+    return util.mergeDeep(t, e || {});
+}
+
 function createTreeSwitch<T extends ObstacleDef>(e: Partial<T>): T {
     const t = {
         type: "obstacle",
@@ -243,24 +337,15 @@ export const Interactables: Record<string, MapObjectDef> = {
         health: 200,
         img: { sprite: "map-control-panel-06.img" },
     }),
-    switch_01: createControlPanel({
-        collision: collider.createAabbExtents(v2.create(0, 0), v2.create(0.45, 0.55)),
-        destructible: false,
-        button: {
-            interactionRad: 0.2,
-            interactionText: "game-use",
-            useOnce: true,
-            useType: "",
-            useDelay: 0.25,
-            useDir: v2.create(-1, 0),
-            useImg: "map-switch-02.img",
-            offImg: "map-switch-03.img",
-            sound: {
-                on: "button_press_01",
-                off: "button_press_01",
-            },
-        },
-        img: { sprite: "map-switch-01.img" },
+    switch_01: createSwitch({}),
+    switch_01o: createSwitch({
+        img: { sprite: "map-switch-01o.img" },
+    }),
+    switch_01p: createSwitch({
+        img: { sprite: "map-switch-01p.img" },
+    }),
+    switch_01y: createSwitch({
+        img: { sprite: "map-switch-01y.img" },
     }),
     switch_02: createControlPanel({
         collision: collider.createAabbExtents(v2.create(0, 0), v2.create(0.45, 0.55)),
@@ -300,6 +385,41 @@ export const Interactables: Record<string, MapObjectDef> = {
         img: { tint: 0x4b0082 },
     }),
     bottle_02v: createBottle2({ img: { tint: 0xee82ee } }),
+    button_01: createButton({}),
+    button_01g: createButton({
+        img: { sprite: "map-button-01g.img" },
+        button: {
+            interactionRad: 1.25,
+            interactionText: "game-use",
+            useOnce: true,
+            useType: "",
+            useDelay: 0.25,
+            useDir: v2.create(-1, 0),
+            useImg: "map-button-02.img",
+            offImg: "map-button-02.img",
+            sound: {
+                on: "button_press_01",
+                off: "button_press_01",
+            },
+        },
+    }),
+    button_01b: createButton({
+        img: { sprite: "map-button-01b.img" },
+        button: {
+            interactionRad: 1.25,
+            interactionText: "game-use",
+            useOnce: true,
+            useType: "",
+            useDelay: 0.25,
+            useDir: v2.create(-1, 0),
+            useImg: "map-button-02.img",
+            offImg: "map-button-02.img",
+            sound: {
+                on: "button_press_01",
+                off: "button_press_01",
+            },
+        },
+    }),
     recorder_01: createRecorder({
         button: { sound: { on: "log_01" } },
     } as unknown as Partial<ObstacleDef>),
@@ -371,4 +491,4 @@ export const Interactables: Record<string, MapObjectDef> = {
     tree_switch_03: createTreeSwitch({
         img: { sprite: "map-tree-switch-03.img" },
     }),
-}
+} as const satisfies Record<string, MapObjectDef>;

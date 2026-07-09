@@ -1,6 +1,6 @@
 import { assert } from "../utils/util.ts";
 import { RawGameObjectDefs } from "./gameObjectDefs.ts";
-import { RawMapObjectDefs } from "./mapObjectDefs.ts";
+import { ObjectDefIndex } from "./mapObjectIndex.ts";
 
 class DefinitionRegister<T extends { type: string }> {
     readonly type: string;
@@ -72,15 +72,15 @@ class DefinitionRegister<T extends { type: string }> {
      * Additionally, can have an optional parameter to filter the definition type (e.g. "gun")
      * And will throw if the definition is not of that type
      */
-    typeToDef(type: string): T;
-    typeToDef<D extends T["type"] = T["type"]>(type: string, defType: D): T & { type: D };
-    typeToDef<D extends T["type"] = T["type"]>(type: string, defType?: D): T & { type: D } {
+    get(type: string): T;
+    get<D extends T["type"] = T["type"]>(type: string, defType: D): T & { type: D };
+    get<D extends T["type"] = T["type"]>(type: string, defType?: D): T & { type: D } {
         if (!type) {
             throw new Error(`Received empty type, expected a ${this.type} type`);
         }
         const def = this._defs[type];
         if (!def) {
-            throw new Error(`${type} is not a valid ${this.type} definition`);
+            throw new Error(`Def '${type}' does not exist on ${this.type} definitions`);
         }
         if (defType) {
             if (def.type !== defType) {
@@ -90,13 +90,26 @@ class DefinitionRegister<T extends { type: string }> {
         return def as T & { type: D };
     }
 
+    getSafe(type: string): T | undefined {
+        return this._defs[type];
+    }
+
+    typeToDef(type: string): T;
+    typeToDef<D extends T["type"] = T["type"]>(type: string, defType: D): T & { type: D };
+    typeToDef<D extends T["type"] = T["type"]>(type: string, defType?: D): T & { type: D } {
+        if (defType !== undefined) {
+            return this.get(type, defType);
+        }
+        return this.get(type) as T & { type: D };
+    }
+
     /**
      * Like typeToDef but that doesn't throw and instead returns undefined for invalid types
      *
      * Use it for optional types (e.g. when the type string can be an empty string)
      */
     typeToDefSafe(type: string): T | undefined {
-        return this._defs[type];
+        return this.getSafe(type);
     }
 
     typeExists(type: string): boolean {
@@ -109,4 +122,4 @@ class DefinitionRegister<T extends { type: string }> {
 }
 
 export const GameObjectDefs = new DefinitionRegister("Game", RawGameObjectDefs, 10);
-export const MapObjectDefs = new DefinitionRegister("Map", RawMapObjectDefs, 12);
+export const MapObjectDefs = new DefinitionRegister("Map", ObjectDefIndex, 12);

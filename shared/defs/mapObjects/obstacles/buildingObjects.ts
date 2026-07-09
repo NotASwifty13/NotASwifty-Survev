@@ -3,10 +3,9 @@ import { util } from "../../../utils/util";
 import { v2 } from "../../../utils/v2";
 import type {
     MapObjectDef,
-    BuildingDef,
     ObstacleDef,
 } from "../../mapObjectsTyping";
-import { tierLoot, autoLoot, MaterialDefs } from "./obstacleHelpers"
+import { MaterialDefs } from "../objectHelpers"
 
 //
 // Walls, Doors, and other building-only obstacles
@@ -293,10 +292,10 @@ export const BuildingObjects: Record<string, MapObjectDef> = {
             },
             img: { tint: 0x520000 },
         } as unknown as Partial<ObstacleDef>),
-        lab_door_03: createLabDoor({
+    lab_door_03: createLabDoor({
             door: { openOneWay: 1 },
             img: { tint: 0x520000 },
-        } as unknown as Partial<ObstacleDef>),
+    } as unknown as Partial<ObstacleDef>),
     lab_door_locked_01: createLabDoor({
             door: {
                 locked: true,
@@ -335,7 +334,6 @@ export const BuildingObjects: Record<string, MapObjectDef> = {
         },
         img: { tint: 0x520000 },
     } as unknown as Partial<ObstacleDef>), 
-
     vault_door_main: createDoor({
         material: "metal",
         hinge: v2.create(1, 3.5),
@@ -355,7 +353,6 @@ export const BuildingObjects: Record<string, MapObjectDef> = {
             },
         },
     } as unknown as Partial<ObstacleDef>),
-
     vault_door_chrys_01: createDoor({
         material: "metal",
         hinge: v2.create(1, 3.5),
@@ -385,7 +382,26 @@ export const BuildingObjects: Record<string, MapObjectDef> = {
             spriteAnchor: v2.create(0.2, 1),
         },
     } as unknown as Partial<ObstacleDef>),
-
+vault_door_eye: createDoor({
+        material: "metal",
+        hinge: v2.create(1, 3.5),
+        extents: v2.create(1, 3.5),
+        img: { sprite: "map-door-02.img" },
+        door: {
+            interactionRad: 1.5,
+            openSpeed: 10,
+            openOneWay: -1,
+            openDelay: 0.1,
+            openOnce: true,
+            canUse: false,
+            spriteAnchor: v2.create(0.2, 1),
+            sound: {
+                open: "none",
+                close: "none",
+                change: "none",
+            },
+        },
+    } as unknown as Partial<ObstacleDef>),
     saloon_door_secret: createDoor({
         destructible: false,
         material: "wood",
@@ -411,7 +427,6 @@ export const BuildingObjects: Record<string, MapObjectDef> = {
             zIdx: 9,
         },
     } as unknown as Partial<ObstacleDef>),
-
     teahouse_door_01: createLabDoor({
         img: { tint: 0xddd1b5, alpha: 0.95 },
         door: {
@@ -437,7 +452,6 @@ export const BuildingObjects: Record<string, MapObjectDef> = {
             },
         },
     } as unknown as Partial<ObstacleDef>),
-
     secret_door_club: createDoor({
         destructible: false,
         material: "concrete",
@@ -467,7 +481,6 @@ export const BuildingObjects: Record<string, MapObjectDef> = {
         },
         img: { tint: 0x520000 },
     } as unknown as Partial<ObstacleDef>),
-
     vault_door_bathhouse: createDoor({
         destructible: false,
         material: "metal",
@@ -497,11 +510,10 @@ export const BuildingObjects: Record<string, MapObjectDef> = {
         },
         img: { tint: 0x4b4b4b },
     } as unknown as Partial<ObstacleDef>),
-
     house_window_01: createWindow({}),
 
     house_window_broken_01: createLowWall({}),
-    
+
     lab_window_01: createWindow({
             destroyType: "lab_window_broken_01",
         }),
@@ -555,6 +567,10 @@ export const BuildingObjects: Record<string, MapObjectDef> = {
 
     // Walls
 
+    container_05_collider: createWall({
+        material: "metal",
+        extents: v2.create(2.75, 6),
+    }),
     hedgehog_wall: createWall({
         material: "metal",
         extents: v2.create(3, 0.5),
@@ -604,6 +620,10 @@ export const BuildingObjects: Record<string, MapObjectDef> = {
         img: wallImg("map-wall-14.img", 0x465000),
     }),
     hut_window_open_01: createLowWall({ img: { tint: 0x753402 } }),
+    warehouse_wall_side: createWall({
+        material: "metal",
+        extents: v2.create(25, 0.6),
+    }),
     warehouse_wall_edge: createWall({
         material: "metal",
         extents: v2.create(0.6, 3.2),
@@ -1604,6 +1624,19 @@ export const BuildingObjects: Record<string, MapObjectDef> = {
             zIdx: 10,
         },
     }),
+    stone_wall_int_4: createWall({
+        material: "stone",
+        extents: v2.create(0.6, 2),
+        img: wallImg("map-wall-04-stone.img", 0xffffff),
+    }),
+    metal_wall_column_4x8: createWall({
+        material: "metal",
+        extents: v2.create(2, 4),
+    }),
+    metal_wall_column_5x12: createWall({
+        material: "metal",
+        extents: v2.create(2.5, 6),
+    }),
     wood_perm_wall_ext_5: createWall({
         material: "woodPerm",
         extents: v2.create(0.5, 2.5),
@@ -1903,6 +1936,6 @@ export const BuildingObjects: Record<string, MapObjectDef> = {
         material: "metal",
         extents: v2.create(0.4, 6),
     }),
-}
+} as const satisfies Record<string, MapObjectDef>;
 
 
