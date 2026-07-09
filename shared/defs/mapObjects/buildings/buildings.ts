@@ -11646,6 +11646,7 @@ export const Buildings: Record<string, MapObjectDef> = {
         map: { displayType: "barn_01" },
     } as unknown as Partial<BuildingDef>),
     bank_01: createBank({ teamId: 1 }),
+    bank_01b: createBank({ vault: "vault_01b" }),
     bank_01x: createBank({
         ceiling: {
             imgs: [
