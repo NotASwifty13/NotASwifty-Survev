@@ -10,10 +10,14 @@ import { type FindGamePrivateBody, type ServerGameConfig } from "../utils/types.
 import { type GameData, type ProcessMsg, ProcessMsgType } from "./ipcTypes.ts";
 
 let procFile: string;
-if (process.env.NODE_ENV === "production") {
-    procFile = "dist/gameProcess.js";
-} else {
+let procArgv: string[];
+
+if (import.meta.filename.endsWith(".ts")) {
     procFile = "src/game/gameProcess.ts";
+    procArgv = ["--expose-gc", "--import", "tsx"];
+} else {
+    procArgv = [];
+    procFile = "dist/gameProcess.js";
 }
 
 export enum ProcState {
@@ -33,6 +37,7 @@ class GameProcess {
         aliveCount: 0,
         startedTime: 0,
         stopped: false,
+        timeRunning: 0,
     };
 
     state = ProcState.Idle;
@@ -54,6 +59,7 @@ class GameProcess {
         this.manager = manager;
         this.process = fork(procFile, [], {
             serialization: "advanced",
+            execArgv: procArgv,
         });
 
         this.process.on("message", (msg: ProcessMsg) => {
@@ -69,19 +75,20 @@ class GameProcess {
         }
 
         switch (msg.type) {
-            case ProcessMsgType.Created:
-                this.state = ProcState.Running;
-                for (const cb of this.onCreatedCbs) {
-                    cb(this);
-                }
-                this.onCreatedCbs.length = 0;
-                if (this.reusedCount === 1) {
-                    this.manager.logger.info(
-                        `Process ${this.process.pid} created in ${Date.now() - this.createdTime}ms`,
-                    );
-                }
-                break;
             case ProcessMsgType.UpdateData:
+                if (this.state === ProcState.CreatingGame && msg.canJoin) {
+                    this.state = ProcState.Running;
+                    for (const cb of this.onCreatedCbs) {
+                        cb(this);
+                    }
+                    this.onCreatedCbs.length = 0;
+                    if (this.reusedCount === 1) {
+                        this.manager.logger.info(
+                            `Process ${this.process.pid} created in ${Date.now() - this.createdTime}ms`,
+                        );
+                    }
+                }
+
                 if (this.gameData.id !== msg.id) {
                     this.manager.processById.delete(this.gameData.id);
                     this.gameData.id = msg.id;

@@ -66,6 +66,8 @@ interface Emote {
     itemType: string;
 }
 
+type FabricateThrowable = keyof typeof PerkProperties["fabricate"]["weights"];
+
 const boostHeals: Array<{ maxBoost: number; heal: number }> = [];
 {
     const boostBreakPoints = GameConfig.player.boostBreakpoints;
@@ -133,13 +135,6 @@ export class PlayerBarn {
         this.playerStatusRate = net.getPlayerStatusUpdateRate(this.game.map.factionMode);
     }
 
-    randomPlayer(player?: Player) {
-        const livingPlayers = player
-            ? this.livingPlayers.filter((p) => p != player)
-            : this.livingPlayers;
-        return livingPlayers[util.randomInt(0, livingPlayers.length - 1)];
-    }
-
     addPlayer(
         client: Client,
         joinMsg: net.JoinMsg,
@@ -191,8 +186,8 @@ export class PlayerBarn {
             layer,
             client,
             finalName,
-            joinMsg.isMobile,
             joinMsg.bot,
+            joinMsg.isMobile,
             joinData.quests,
         );
 
@@ -363,7 +358,7 @@ export class PlayerBarn {
 
                     if (!finalPlayers.length) continue;
 
-                    const randomPlayer = util.randomItem(finalPlayers)!;
+                    const randomPlayer = util.randomItem(finalPlayers);
                     randomPlayer.promoteToRole(scheduledRole.role);
                 }
             }
@@ -457,18 +452,6 @@ export class PlayerBarn {
         }
     }
 
-    isTeamGameOver(): boolean {
-        const groupAlives = [...this.groups.values()].filter(
-            (group) => !group.allDeadOrDisconnected,
-        );
-
-        if (groupAlives.length <= 1) {
-            return true;
-        }
-
-        return false;
-    }
-
     getAliveGroups(): Group[] {
         return [...this.groups.values()].filter(
             (group) => group.livingPlayers.length > 0,
@@ -547,23 +530,6 @@ export class PlayerBarn {
         this.groups.push(group);
         this.groupsByHash.set(hash, group);
         return group;
-    }
-
-    nextTeam(currentTeam: Group) {
-        const aliveTeams = Array.from(this.groups.values()).filter(
-            (t) => !t.allDeadOrDisconnected,
-        );
-        const currentTeamIndex = aliveTeams.indexOf(currentTeam);
-        const newIndex = (currentTeamIndex + 1) % aliveTeams.length;
-        return aliveTeams[newIndex];
-    }
-
-    prevTeam(currentTeam: Group) {
-        const aliveTeams = Array.from(this.groups.values()).filter(
-            (t) => !t.allDeadOrDisconnected,
-        );
-        const currentTeamIndex = aliveTeams.indexOf(currentTeam);
-        return aliveTeams.at(currentTeamIndex - 1) ?? currentTeam;
     }
 
     getPlayerWithHighestKills(): Player | undefined {
@@ -858,7 +824,7 @@ export class Player extends BaseGameObject {
     /** for the perk fabricate, fills inventory with frags every 12 seconds */
     fabricateRefillTicker = 0;
     fabricateGiveTicker = 0;
-    fabricateThrowablesLeft = 0;
+    fabricateThrowablesLeft: Array<FabricateThrowable> = [];
 
     // "Gabby Ghost" perk random emojis
     chattyTicker = 0;
@@ -1224,6 +1190,7 @@ export class Player extends BaseGameObject {
             }
             case "fabricate":
                 this.fabricateRefillTicker = 0;
+                this.fabricateThrowablesLeft = [];
                 break;
             case "firepower":
                 this.weaponManager.clampGunsAmmo();
@@ -1319,6 +1286,7 @@ export class Player extends BaseGameObject {
     groupId = 0;
 
     loadout = {
+        outfit: "outfitBase",
         heal: "heal_basic",
         boost: "boost_basic",
         emotes: [...GameConfig.defaultEmoteLoadout],
@@ -1490,8 +1458,7 @@ export class Player extends BaseGameObject {
             if (this.roleMenuTicker <= 0) {
                 this.roleMenuTicker = 0;
                 const roleChoices = this.game.map.mapDef.gameMode.perkModeRoles!;
-                const randomRole = roleChoices[util.randomInt(0, roleChoices.length - 1)];
-                this.roleSelect(randomRole);
+                this.roleSelect(util.randomItem(roleChoices));
             }
         }
 
@@ -1627,7 +1594,7 @@ export class Player extends BaseGameObject {
             const emotes = Object.keys(EmotesDefs);
 
             this.game.playerBarn.addEmote(
-                emotes[Math.floor(Math.random() * emotes.length)],
+                util.randomItem(emotes),
                 this.__id,
             );
         }
@@ -1828,17 +1795,17 @@ export class Player extends BaseGameObject {
         }
 
         if (this.hasPerk("fabricate")) {
-            if (this.fabricateThrowablesLeft > 0) {
+            if (this.fabricateThrowablesLeft.length > 0) {
                 this.fabricateGiveTicker -= dt;
                 if (this.fabricateGiveTicker < 0) {
                     this.fabricateGiveTicker = PerkProperties.fabricate.giveInterval;
-                    this.invManager.give("frag", 1);
 
-                    this.fabricateThrowablesLeft--;
+                    const item = this.fabricateThrowablesLeft.shift()!;
+                    this.invManager.give(item, 1);
 
                     const msg = new net.PickupMsg();
                     msg.type = net.PickupMsgType.Success;
-                    msg.item = "frag";
+                    msg.item = item;
                     msg.count = 1;
                     if (
                         !this.weaponManager.weapons[GameConfig.WeaponSlot.Throwable].type
@@ -1852,11 +1819,32 @@ export class Player extends BaseGameObject {
 
             this.fabricateRefillTicker -= dt;
             if (this.fabricateRefillTicker <= 0) {
-                const maxSize = this.invManager.getMaxCapacity("frag");
-                const current = this.invManager.get("frag");
-                const throwablesToGive = math.max(maxSize - current, 0);
+                const counts: Record<FabricateThrowable, number> = {
+                    frag: 0,
+                    mirv: 0,
+                    strobe: 0,
+                };
 
-                this.fabricateThrowablesLeft = throwablesToGive;
+                let remaining = 8;
+                while (remaining > 0) {
+                    const item = util.weightedRandomObject(PerkProperties.fabricate.weights) as FabricateThrowable;
+                    counts[item]++;
+                    remaining--;
+                }
+
+                const nextQueue: Array<FabricateThrowable> = [];
+                for (const item of Object.keys(PerkProperties.fabricate.weights) as FabricateThrowable[]) {
+                    const canGive = math.max(
+                        this.invManager.getMaxCapacity(item) - this.invManager.get(item),
+                        0,
+                    );
+                    const giveCount = math.min(counts[item], canGive);
+                    for (let i = 0; i < giveCount; i++) {
+                        nextQueue.push(item);
+                    }
+                }
+
+                this.fabricateThrowablesLeft = nextQueue;
                 this.fabricateGiveTicker = PerkProperties.fabricate.giveInterval;
                 this.fabricateRefillTicker = PerkProperties.fabricate.refillInterval;
             }
@@ -2732,7 +2720,7 @@ export class Player extends BaseGameObject {
 
                 if (!lonePerks) {
                     if (rolePerks.length > 0 && perkPool.length > 0) {
-                        const perkToReplace = rolePerks[util.randomInt(0, rolePerks.length - 1)].type;
+                        const perkToReplace = util.randomItem(rolePerks).type;
                         const candidatePerks = perkPool.filter(
                             (p) => !killCreditSource.hasPerk(p),
                         );
@@ -2917,7 +2905,7 @@ export class Player extends BaseGameObject {
 
         if (this.outfit) {
             const def = GameObjectDefs.typeToDef(this.outfit, "outfit");
-            if (!def.noDropOnDeath && !def.noDrop) {
+            if (!def.noDropOnDeath && !def.noDrop && this.outfit !== this.loadout.outfit) {
                 this.game.lootBarn.addLoot(this.outfit, this.pos, this.layer, 1, {
                     pushSpeed: util.random(7.5, 11),
                     dir: v2.randomUnit(),
@@ -3922,7 +3910,7 @@ export class Player extends BaseGameObject {
 
         if (playerLootTypes.length == 0) return;
 
-        const item = playerLootTypes[util.randomInt(0, playerLootTypes.length - 1)];
+        const item = util.randomItem(playerLootTypes);
         const weapIdx = this.weapons.findIndex((w) => w.type == item);
 
         const dropMsg = new net.DropItemMsg();
@@ -3959,7 +3947,7 @@ export class Player extends BaseGameObject {
             : ([_type, def]) => !def.noPotatoSwap;
 
         const weaponChoices = enumerableDefs.filter(filterCb);
-        const [chosenWeaponType, chosenWeaponDef] = weaponChoices[util.randomInt(0, weaponChoices.length - 1)];
+        const [chosenWeaponType, chosenWeaponDef] = util.randomItem(weaponChoices);
 
         let index;
         if (this.activeWeapon === oldWeapon) {
@@ -4205,6 +4193,7 @@ export class Player extends BaseGameObject {
             && loadout.outfit !== "outfitBase"
         ) {
             this.setOutfit(loadout.outfit);
+            this.loadout.outfit = this.outfit;
         }
 
         if (isItemInLoadout(loadout.melee, "melee") && loadout.melee != "fists") {
@@ -4442,10 +4431,10 @@ export class Player extends BaseGameObject {
             player._lastBreathTicker = 5;
 
             player.giveHaste(GameConfig.HasteType.Inspire, 5);
-            if (player.teamId == 1 && player.__id != this.__id) {
+            if (player.teamId == GameConfig.FactionTeam.Red && player.__id != this.__id) {
                 this.game.playerBarn.addEmote("emote_bugle_final_red", player.__id);
             }
-            if (player.teamId == 2 && player.__id != this.__id) {
+            if (player.teamId == GameConfig.FactionTeam.Blue && player.__id != this.__id) {
                 this.game.playerBarn.addEmote("emote_bugle_final_blue", player.__id);
             }
             player.recalculateScale();
@@ -4463,10 +4452,10 @@ export class Player extends BaseGameObject {
 
         for (const player of affectedPlayers) {
             player.giveHaste(GameConfig.HasteType.Inspire, 3);
-            if (player.teamId == 1 && player.__id != this.__id) {
+            if (player.teamId == GameConfig.FactionTeam.Red && player.__id != this.__id) {
                 this.game.playerBarn.addEmote("emote_bugle_inspiration_red", player.__id);
             }
-            if (player.teamId == 2 && player.__id != this.__id) {
+            if (player.teamId == GameConfig.FactionTeam.Blue && player.__id != this.__id) {
                 this.game.playerBarn.addEmote(
                     "emote_bugle_inspiration_blue",
                     player.__id,
@@ -4520,9 +4509,9 @@ export class Player extends BaseGameObject {
         }
 
         if (this.game.map.potatoMode && this.game.map.factionMode) {
-            if (this.teamId === 1) {
+            if (this.teamId === GameConfig.FactionTeam.Red) {
                 emote = "emote_tomato";
-            } else if (this.teamId === 2) {
+            } else if (this.teamId === GameConfig.FactionTeam.Blue) {
                 emote = "emote_potato";
             }
         }

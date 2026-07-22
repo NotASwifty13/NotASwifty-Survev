@@ -1,4 +1,3 @@
-import { TeamColor } from "../../../shared/defs/maps/factionDefs.ts";
 import { GameConfig, TeamMode } from "../../../shared/gameConfig.ts";
 import { ObjectType } from "../../../shared/net/objectSerializeFns.ts";
 import { collider } from "../../../shared/utils/collider.ts";
@@ -244,8 +243,8 @@ export class GameModeManager {
             case GameMode.Team:
                 return player.group!.players;
             case GameMode.Faction:
-                const redLeader = this.game.playerBarn.teams[TeamColor.Red - 1].leader;
-                const blueLeader = this.game.playerBarn.teams[TeamColor.Blue - 1].leader;
+                const redLeader = this.game.playerBarn.teams[GameConfig.FactionTeam.Red - 1].leader;
+                const blueLeader = this.game.playerBarn.teams[GameConfig.FactionTeam.Blue - 1].leader;
                 const highestKiller = this.game.playerBarn.players.reduce(
                     (highestKiller, p) => {
                         if (highestKiller.kills === p.kills) {
@@ -296,7 +295,7 @@ export class GameModeManager {
                 // special case that only happens when the player has self_revive since the teammates wouldnt have previously been finished off
                 if (group.checkAllDowned(player) && !group.checkSelfRevive()) {
                     // don't kill teammates if any one has self revive
-                    group.killAllTeammates();
+                    group.killAllDowned();
                 }
                 return;
             }
@@ -309,7 +308,7 @@ export class GameModeManager {
                 group.allDeadOrDisconnected = true; // must set before any kill() calls so the gameovermsgs are accurate
                 player.kill(params);
                 if (allDowned) {
-                    group.killAllTeammates();
+                    group.killAllDowned();
                 }
             } else {
                 player.down(params);

@@ -1,3 +1,4 @@
+import type { MapId } from "../gameConfig.ts";
 import type { Vec2 } from "../utils/v2.ts";
 import type { RoleDef } from "./gameObjects/roleDefs.ts";
 import { Main } from "./maps/baseDefs.ts";
@@ -20,7 +21,6 @@ import { Woods } from "./maps/woodsDefs.ts";
 import { WoodsSnow } from "./maps/woodsSnowDefs.ts";
 import { WoodsSpring } from "./maps/woodsSpringDefs.ts";
 import { WoodsSummer } from "./maps/woodsSummerDefs.ts";
-import type { MapId } from "./types/misc.ts";
 
 export type Atlas =
     | "gradient"
@@ -92,6 +92,9 @@ export interface MapDef {
             waterRipple: number;
             beach: number;
             riverbank: number;
+            lakeWater?: number;
+            lakeWaterRipple?: number;
+            lakeRiverbank?: number;
             grass: number;
             underground: number;
             playerSubmerge: number;
@@ -193,6 +196,7 @@ export interface MapDef {
                     innerRad: number;
                     outerRad: number;
                     centerObj?: string;
+                    riverMaskRad?: number;
                     spawnBound: {
                         pos: Vec2;
                         rad: number;

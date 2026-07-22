@@ -42,6 +42,7 @@ export class Game {
     over = false;
     startedTime = 0;
     stopTicker = 0;
+    timeRunning = 0;
     // used to stop the game if theres no connected players
     noPlayersTicker = 0;
 
@@ -148,6 +149,8 @@ export class Game {
         const now = performance.now();
         if (!this.now) this.now = now;
         dt ??= math.clamp((now - this.now) / 1000, 0.001, 1 / 8);
+
+        this.timeRunning += dt;
 
         dt *= this.debugSpeedMulti;
 
@@ -298,7 +301,6 @@ export class Game {
         this.lootBarn.flush();
         this.planeBarn.flush();
         this.bulletBarn.flush();
-        this.airdropBarn.flush();
         this.objectRegister.flush();
         this.explosionBarn.flush();
         this.gas.flush();
@@ -376,8 +378,8 @@ export class Game {
             client.disconnect();
         }
         this.logger.info("Game Ended");
-        this.updateData();
         this._saveGameToDatabase();
+        this.updateData();
     }
 
     // implementation of those is on gameProcess.ts
@@ -385,8 +387,8 @@ export class Game {
     // to make offline mode and unit tests easier to maintain
 
     updateData() {}
-    protected async _saveGameToDatabase() {}
-    async sendQuestProgress(_userId: string, _progress: Array<{ id: string; delta: number }>) {}
+    protected _saveGameToDatabase() {}
+    sendQuestProgress(_userId: string, _progress: Array<{ id: string; delta: number }>) {}
 
     /**
      * Steps the game X seconds in the future
